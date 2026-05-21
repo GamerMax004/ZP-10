@@ -1,0 +1,1547 @@
+<!DOCTYPE html>
+<html lang="de">
+<head>
+<meta charset="UTF-8"/>
+<meta name="viewport" content="width=device-width,initial-scale=1.0,maximum-scale=1.0"/>
+<meta name="theme-color" content="#6c3de8"/>
+<title>ZP10 Mathe – Hollenberg-Gymnasium Waldbröl</title>
+<link href="https://fonts.googleapis.com/css2?family=Nunito:wght@400;600;700;800;900&display=swap" rel="stylesheet"/>
+<style>
+*{box-sizing:border-box;margin:0;padding:0}
+html,body{height:100%;font-family:'Nunito',sans-serif}
+body{background:var(--bg);color:var(--text);min-height:100vh;transition:background .3s,color .3s}
+:root{--bg:#f0f2ff;--card:#fff;--card2:#eef0fb;--text:#1a1a3e;--text2:#5a5a8a;--border:#dde0f5;
+  --acc:#6c3de8;--acc2:#8b5cf6;--red:#dc2626;--green:#059669;--yel:#d97706}
+body.dark{--bg:#07071a;--card:#10102a;--card2:#171730;--text:#e8e8ff;--text2:#8888bb;--border:#252550}
+
+/* FULL-WIDTH RESPONSIVE */
+#app{width:100%;min-height:100vh;position:relative}
+.view{padding:16px 14px 86px;animation:slideUp .3s ease}
+@media(min-width:540px){.view{padding:20px 22px 86px}}
+@media(min-width:800px){.view{padding:26px 40px 86px}}
+@media(min-width:1100px){.view{padding:30px 80px 86px;max-width:1100px;margin:0 auto}}
+@media(min-width:1400px){.view{max-width:1300px}}
+
+.card{background:var(--card);border-radius:18px;padding:18px;
+  box-shadow:0 3px 18px rgba(0,0,0,.07);border:1.5px solid var(--border)}
+.btn{border:none;border-radius:13px;padding:11px 20px;font-size:15px;font-weight:700;
+  cursor:pointer;font-family:'Nunito',sans-serif;transition:all .15s;display:inline-flex;
+  align-items:center;justify-content:center;gap:7px}
+.btn:active{transform:scale(.97)}
+.btn-p{background:linear-gradient(135deg,#6c3de8,#8b5cf6);color:#fff;
+  box-shadow:0 4px 14px rgba(108,61,232,.28)}
+.btn-p:hover{transform:translateY(-1px);box-shadow:0 6px 20px rgba(108,61,232,.38)}
+.btn-g{background:transparent;color:var(--text2);border:1.5px solid var(--border);
+  border-radius:13px;padding:9px 16px;font-size:14px;font-weight:600;
+  cursor:pointer;font-family:'Nunito',sans-serif;transition:all .15s}
+.btn-g:hover{border-color:var(--acc);color:var(--acc)}
+.btn-danger{background:#dc2626;color:#fff;border:none}
+.btn-success{background:#16a34a;color:#fff;border:none}
+
+.inp{width:100%;padding:12px 14px;border-radius:12px;border:1.5px solid var(--border);
+  font-size:15px;font-family:'Nunito',sans-serif;font-weight:600;outline:none;
+  background:var(--card);color:var(--text);transition:border-color .2s,box-shadow .2s}
+.inp:focus{border-color:var(--acc);box-shadow:0 0 0 3px rgba(108,61,232,.1)}
+.inp-label{font-size:12px;font-weight:700;color:var(--text2);margin-bottom:4px;display:block}
+
+.pb{background:var(--card2);border-radius:999px;height:8px;overflow:hidden}
+.pb-fill{height:100%;border-radius:999px;transition:width .8s ease}
+
+.d-leicht{background:#dcfce7;color:#166534;border-radius:6px;padding:2px 7px;font-size:11px;font-weight:700}
+.d-mittel{background:#fef3c7;color:#92400e;border-radius:6px;padding:2px 7px;font-size:11px;font-weight:700}
+.d-schwer{background:#fee2e2;color:#991b1b;border-radius:6px;padding:2px 7px;font-size:11px;font-weight:700}
+.xp-pill{background:rgba(108,61,232,.12);color:var(--acc);border-radius:8px;padding:2px 9px;font-size:11px;font-weight:700}
+.admin-chip{background:linear-gradient(135deg,#f59e0b,#ef4444);color:#fff;
+  border-radius:7px;padding:2px 7px;font-size:10px;font-weight:800}
+
+/* AUTH PORTAL */
+#auth-portal{min-height:100vh;display:flex;align-items:center;justify-content:center;
+  padding:16px;background:linear-gradient(160deg,#1a0533 0%,#2d1566 45%,#0d2b6e 100%)}
+.auth-blob{position:fixed;border-radius:50%;filter:blur(80px);opacity:.28;pointer-events:none;z-index:0}
+.auth-box{display:flex;width:100%;max-width:860px;border-radius:24px;overflow:hidden;
+  box-shadow:0 40px 100px rgba(0,0,0,.5);position:relative;z-index:1}
+.auth-left{flex:1;padding:36px;background:linear-gradient(160deg,rgba(108,61,232,.92),rgba(15,50,130,.92));
+  color:#fff;display:flex;flex-direction:column;justify-content:space-between;min-width:0}
+.auth-right{flex:1.1;padding:36px;background:var(--card);min-width:0;overflow-y:auto;max-height:100vh}
+.tab-row{display:flex;background:var(--card2);border-radius:11px;padding:3px;margin-bottom:18px;
+  border:1.5px solid var(--border)}
+.tab-btn{flex:1;padding:8px;border:none;border-radius:9px;font-size:14px;font-weight:700;
+  cursor:pointer;font-family:'Nunito',sans-serif;transition:all .2s;background:transparent;color:var(--text2)}
+.tab-btn.active{background:var(--acc);color:#fff}
+.divider{display:flex;align-items:center;gap:10px;margin:14px 0;color:var(--text2);font-size:12px;font-weight:600}
+.divider::before,.divider::after{content:'';flex:1;height:1px;background:var(--border)}
+.err-msg{background:#fff0f0;border:1.5px solid #fca5a5;border-radius:9px;padding:9px 12px;
+  color:var(--red);font-size:13px;font-weight:600;margin-bottom:10px}
+body.dark .err-msg{background:#2d0a0a;border-color:#7f1d1d}
+@media(max-width:600px){.auth-left{display:none}.auth-right{padding:24px 20px;max-height:none}}
+
+/* NAV */
+.nav-bar{position:fixed;bottom:0;left:0;right:0;background:var(--card);
+  border-top:1.5px solid var(--border);display:flex;
+  box-shadow:0 -4px 20px rgba(0,0,0,.08);z-index:100;
+  padding-bottom:env(safe-area-inset-bottom,0px)}
+.nav-btn{flex:1;background:none;border:none;padding:9px 4px;cursor:pointer;
+  font-family:'Nunito',sans-serif;transition:all .15s;color:var(--text2);min-width:0}
+.nav-btn.active{color:var(--acc)}
+.nav-dot{width:16px;height:3px;background:var(--acc);border-radius:999px;margin:2px auto 0}
+
+/* DRAWING */
+.canvas-wrap{border:1.5px solid var(--border);border-radius:14px;overflow:hidden;margin-top:8px;background:#fff}
+body.dark .canvas-wrap{background:#1a1a3e}
+.canvas-toolbar{display:flex;gap:6px;padding:7px 9px;background:var(--card2);flex-wrap:wrap;align-items:center;border-bottom:1px solid var(--border)}
+.canvas-el{display:block;width:100%;touch-action:none;cursor:crosshair}
+body.dark .canvas-el{filter:invert(1) hue-rotate(180deg)}
+.tool-btn{border:1.5px solid var(--border);background:var(--card);border-radius:8px;
+  padding:5px 9px;cursor:pointer;font-size:12px;font-weight:700;color:var(--text2);
+  font-family:'Nunito',sans-serif;transition:all .15s}
+.tool-btn.active{background:var(--acc);color:#fff;border-color:var(--acc)}
+
+/* EXAM */
+.exam-timer{border-radius:11px;padding:7px 13px;font-weight:800;font-size:16px;
+  font-variant-numeric:tabular-nums;letter-spacing:.4px;white-space:nowrap}
+.et-ok{background:#dcfce7;color:#166534;border:1.5px solid #22c55e}
+.et-warn{background:#fef3c7;color:#92400e;border:1.5px solid #f59e0b}
+.et-urgent{background:#fee2e2;color:#dc2626;border:1.5px solid #ef4444;animation:blink 1s infinite}
+@keyframes blink{0%,100%{opacity:1}50%{opacity:.6}}
+.q-box{border-left:4px solid var(--acc);background:var(--card);border-radius:16px;
+  padding:16px;margin-bottom:14px;box-shadow:0 2px 10px rgba(0,0,0,.05)}
+.q-box.open-type{border-left-color:#d97706}
+.mc-opt{width:100%;text-align:left;background:var(--card);border:1.5px solid var(--border);
+  border-radius:13px;padding:11px 15px;cursor:pointer;font-size:14px;font-weight:600;
+  color:var(--text);font-family:'Nunito',sans-serif;transition:all .2s;margin-bottom:7px;display:block}
+.mc-opt:hover{border-color:var(--acc);background:var(--card2)}
+.mc-opt.sel{border-color:var(--acc);background:rgba(108,61,232,.07)}
+.mc-opt.correct{background:#dcfce7;border-color:#22c55e;color:#166534}
+.mc-opt.wrong{background:#fee2e2;border-color:#ef4444;color:#991b1b}
+.formula-panel{position:fixed;top:0;right:0;bottom:0;width:min(360px,92vw);
+  background:var(--card);border-left:1.5px solid var(--border);z-index:8000;
+  overflow-y:auto;padding:20px 16px 30px;box-shadow:-8px 0 32px rgba(0,0,0,.15);
+  animation:slideRight .25s ease}
+@keyframes slideRight{from{transform:translateX(100%)}to{transform:translateX(0)}}
+.modal-overlay{position:fixed;inset:0;background:rgba(0,0,0,.55);z-index:9000;
+  display:flex;align-items:center;justify-content:center;padding:16px}
+.modal-box{background:var(--card);border-radius:22px;padding:24px;max-width:400px;width:100%;
+  box-shadow:0 20px 60px rgba(0,0,0,.3);animation:pop .3s ease}
+.badge-alert{position:fixed;top:16px;right:16px;z-index:9999;
+  background:linear-gradient(135deg,#6c3de8,#8b5cf6);color:#fff;
+  border-radius:14px;padding:11px 16px;box-shadow:0 8px 30px rgba(108,61,232,.4);
+  animation:pop .4s ease;display:flex;align-items:center;gap:8px;max-width:240px}
+.user-row{display:flex;align-items:center;gap:9px;padding:9px 11px;border-radius:12px;
+  border:1.5px solid var(--border);background:var(--card);margin-bottom:7px}
+
+@keyframes slideUp{from{transform:translateY(12px);opacity:0}to{transform:translateY(0);opacity:1}}
+@keyframes pop{0%{transform:scale(.5);opacity:0}70%{transform:scale(1.1)}100%{transform:scale(1);opacity:1}}
+@keyframes pulse{0%,100%{transform:scale(1)}50%{transform:scale(1.05)}}
+@keyframes float{0%,100%{transform:translateY(0)}50%{transform:translateY(-10px)}}
+::-webkit-scrollbar{width:5px}::-webkit-scrollbar-thumb{background:rgba(108,61,232,.3);border-radius:3px}
+</style>
+</head>
+<body>
+<div id="app"></div>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/react/18.2.0/umd/react.production.min.js"></script>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/react-dom/18.2.0/umd/react-dom.production.min.js"></script>
+<script>
+'use strict';
+const {useState,useEffect,useRef,useCallback,createElement:h,Fragment}=React;
+
+/* ═══════════════════════ STORAGE HELPERS ═══════════════════════ */
+const USERS_KEY='zp10_users_v5';const SESSION_KEY='zp10_sess_v5';
+const EXAM_KEYS={2024:'zp10_exam2024_v4',2025:'zp10_exam2025_v1'};
+const EXAM_DONE_KEYS={2024:'zp10_done2024_v4',2025:'zp10_done2025_v1'};
+const P1_SEC=2400,P2_SEC=4800,TOTAL_SEC=7200; // 40+80=120 min
+
+function loadUsers(){try{const d=localStorage.getItem(USERS_KEY);return d?JSON.parse(d):initUsers();}catch(e){return initUsers();}}
+function saveUsers(u){try{localStorage.setItem(USERS_KEY,JSON.stringify(u));}catch(e){}}
+function initUsers(){const u=[{id:1,username:'admin',password:btoa('Admin@ZP10!'),displayName:'Administrator',avatar:'👑',xp:0,streak:0,lastLogin:null,badges:[],progress:{},isAdmin:true,provider:'local',createdAt:new Date().toISOString()}];saveUsers(u);return u;}
+function getSession(){try{return parseInt(localStorage.getItem(SESSION_KEY))||null;}catch(e){return null;}}
+function setSession(id){try{id?localStorage.setItem(SESSION_KEY,String(id)):localStorage.removeItem(SESSION_KEY);}catch(e){}}
+function getCurrentUser(){const id=getSession();if(!id)return null;return loadUsers().find(u=>u.id===id)||null;}
+function updateUser(id,upd){const us=loadUsers();const i=us.findIndex(u=>u.id===id);if(i>=0){us[i]={...us[i],...upd};saveUsers(us);return us[i];}return null;}
+function deleteUser(id){saveUsers(loadUsers().filter(u=>u.id!==id));}
+function nextId(){return Math.max(0,...loadUsers().map(u=>u.id))+1;}
+function saveExam(year,data){try{localStorage.setItem(EXAM_KEYS[year],JSON.stringify({...data,savedAt:Date.now()}));}catch(e){}}
+function loadExam(year){try{const d=localStorage.getItem(EXAM_KEYS[year]);return d?JSON.parse(d):null;}catch(e){return null;}}
+function clearExam(year){try{localStorage.removeItem(EXAM_KEYS[year]);}catch(e){}}
+function canStartExam(year){try{const d=localStorage.getItem(EXAM_DONE_KEYS[year]);if(!d)return{ok:true};const t=parseInt(d);const until=t+86400000;return until<=Date.now()?{ok:true}:{ok:false,unlockAt:new Date(until)};}catch(e){return{ok:true};}}
+function markExamDone(year){try{localStorage.setItem(EXAM_DONE_KEYS[year],String(Date.now()));}catch(e){}}
+
+/* ═══════════════════════ LEARNING DATA ═══════════════════════ */
+const AVATARS=["🦊","🐼","🦁","🐯","🦋","🐳","🦄","🐸","🤖","👾","🎮","⭐","🔥","💎","🚀"];
+const XP_LVL=[0,100,250,500,900,1400,2100,3000,4500,6500,9000];
+const LVL_NAMES=["Starter 🌱","Lernling 📚","Entdecker 🔍","Denker 💭","Kenner 🎯","Experte ⚡","Meister 🏆","Champion 🌟","Legende 🎓","Mathe-Gott 👑","Unbesiegbar 💫"];
+const SUBJECTS=[
+  {id:"arith",name:"Arithmetik & Algebra",emoji:"🔢",grad:"linear-gradient(135deg,#667eea,#764ba2)",col:"#7c3aed",light:"#f5f3ff",cids:["zahlen","groessen","prozent","zinsen","potenzen","wurzeln","terme","lin_gl","lgs","quad_gl","expo_gl"]},
+  {id:"funk", name:"Funktionen",emoji:"📈",grad:"linear-gradient(135deg,#11998e,#38ef7d)",col:"#059669",light:"#ecfdf5",cids:["zuordnung","lin_funk","quad_funk","expo_funk","sinus"]},
+  {id:"geo",  name:"Geometrie",emoji:"📐",grad:"linear-gradient(135deg,#f093fb,#f5576c)",col:"#db2777",light:"#fdf2f8",cids:["symmetrie","kongruenz","kreis","flaeche","volumen","streckung","trig"]},
+  {id:"stoch",name:"Stochastik",emoji:"🎲",grad:"linear-gradient(135deg,#4facfe,#00f2fe)",col:"#0284c7",light:"#f0f9ff",cids:["statistik","zufall","baum","bedingt"]},
+];
+const ALL_CH=SUBJECTS.flatMap(s=>s.cids);
+const BADGES=[
+  {id:"first",emoji:"🌱",name:"Erster Schritt",desc:"Erste Aufgabe gelöst"},
+  {id:"streak3",emoji:"🔥",name:"3-Tage-Streak",desc:"3 Tage in Folge"},
+  {id:"streak7",emoji:"🏆",name:"Wochenheld",desc:"7 Tage in Folge"},
+  {id:"perfect",emoji:"💎",name:"Perfektionist",desc:"100% bei einem Quiz"},
+  {id:"stars5",emoji:"⭐",name:"Sternsammler",desc:"5 Kapitel mit 3★"},
+  {id:"arith",emoji:"🔢",name:"Algebra-Ass",desc:"Alle Arithmetik-Kapitel"},
+  {id:"funk",emoji:"📈",name:"Funktions-Profi",desc:"Alle Funktionen"},
+  {id:"geo",emoji:"📐",name:"Geo-Experte",desc:"Alle Geometrie-Kapitel"},
+  {id:"stoch",emoji:"🎲",name:"Statistiker",desc:"Alle Stochastik-Kapitel"},
+  {id:"allDone",emoji:"🎓",name:"ZP10-Bereit",desc:"Alle 27 Kapitel"},
+  {id:"lv5",emoji:"⚡",name:"Level 5",desc:"Level 5 erreicht"},
+  {id:"xp1000",emoji:"💫",name:"XP-Jäger",desc:"1000 XP gesammelt"},
+  {id:"exam",emoji:"🏅",name:"Prüfungs-Held",desc:"ZP10-Modus bestanden"},
+  {id:"zp24",emoji:"🥇",name:"ZP10 2024",desc:"Echte ZP10 2024 bestanden"},
+];
+const CH={
+  zahlen:{id:"zahlen",sub:"arith",name:"Zahlen ordnen",emoji:"🔢",diff:"leicht",
+    theory:"• Bruch→Dezimal: Zähler÷Nenner  (3/4=0,75)\n• Dezimal→Prozent: ×100  (0,75=75%)\n• Vergleich: alles in Dezimalzahlen\n• Vorzeichen: –5 < –2 (links=kleiner)",
+    qs:[{t:"mc",q:"Wie viel Prozent sind 3/4?",o:["25%","50%","75%","80%"],a:2,e:"3÷4=0,75 → ×100=75%",d:"leicht",x:10},
+        {t:"tf",q:"–0,9 > –0,1, weil 9 > 1",a:false,e:"–0,9 < –0,1 (weiter links!)",d:"leicht",x:10},
+        {t:"mc",q:"Welche Zahl ist am größten?",o:["3/7≈0,429","3/10=0,3","2/5=0,4","1/3≈0,333"],a:0,e:"3/7≈0,4286",d:"mittel",x:20},
+        {t:"mc",q:"0,625 vollständig als Bruch:",o:["6/10","5/8","62/100","3/5"],a:1,e:"625/1000=5/8",d:"mittel",x:20},
+        {t:"tf",q:"–1/4 < –1/5",a:true,e:"–0,25 < –0,2 ✓",d:"mittel",x:20}]},
+  groessen:{id:"groessen",sub:"arith",name:"Größen umrechnen",emoji:"📏",diff:"leicht",
+    theory:"• Längen: ×10 pro Stufe  (km→m: ×1000)\n• Flächen: ×100 pro Stufe (m²→cm²: ×10000)\n• Volumen: ×1000 pro Stufe\n• 1l=1dm³,  1ml=1cm³",
+    qs:[{t:"mc",q:"35,4 km = ? dm",o:["35400","354000","3540","35400000"],a:1,e:"×10000=354000 dm",d:"leicht",x:10},
+        {t:"mc",q:"0,18 km² = ? m²",o:["1800","18000","180000","1800000"],a:2,e:"×1000000=180000 m²",d:"mittel",x:20},
+        {t:"tf",q:"1 m² = 10 000 cm²",a:true,e:"100×100=10000 ✓",d:"leicht",x:10},
+        {t:"mc",q:"551,84054 gerundet auf Zehntel:",o:["551,8","551,9","552,0","551,84"],a:0,e:"4<5 → abrunden→551,8",d:"mittel",x:20},
+        {t:"mc",q:"2,5 h = ? s",o:["150","1500","9000","15000"],a:2,e:"2,5×3600=9000 s",d:"mittel",x:20}]},
+  prozent:{id:"prozent",sub:"arith",name:"Prozentrechnung",emoji:"💯",diff:"leicht",
+    theory:"• W=G×p/100  • p=(W/G)×100  • G=W×100/p\n• +p%→×(1+p/100),  –p%→×(1–p/100)\n• ⚠️ +10% dann –10% ≠ 0%!",
+    qs:[{t:"mc",q:"Pullover 80€, 25% Rabatt. Preis?",o:["55€","60€","65€","70€"],a:1,e:"80×0,75=60€",d:"leicht",x:10},
+        {t:"mc",q:"W=36€, G=720€. p=?",o:["3%","4%","5%","6%"],a:2,e:"36/720×100=5%",d:"leicht",x:10},
+        {t:"tf",q:"+10% dann –10% = Ausgangswert",a:false,e:"100×1,1×0,9=99 → –1%",d:"mittel",x:20},
+        {t:"mc",q:"Nach 20% Rabatt kostet Handy 480€. Ursprungspreis?",o:["560€","580€","600€","620€"],a:2,e:"G×0,8=480→G=600€",d:"mittel",x:20},
+        {t:"mc",q:"G=420kg, p=80%. W=?",o:["314kg","336kg","350kg","380kg"],a:1,e:"420×0,8=336 kg",d:"leicht",x:10}]},
+  zinsen:{id:"zinsen",sub:"arith",name:"Zinsrechnung",emoji:"🏦",diff:"mittel",
+    theory:"• Z=K×p/100\n• Tageszins: Z=K×p/100×t/360\n• Zinseszins: Kₙ=K₀×(1+p/100)ⁿ",
+    qs:[{t:"mc",q:"K=2000€, p=3%. Jahreszinsen?",o:["40€","50€","60€","70€"],a:2,e:"2000×0,03=60€",d:"leicht",x:10},
+        {t:"tf",q:"Zinseszins = exponentielles Wachstum",a:true,e:"Kₙ=K₀×(1+p/100)ⁿ ✓",d:"mittel",x:20},
+        {t:"mc",q:"K₀=4000€, p=2,5%, n=6. Kₙ≈?",o:["4550€","4638€","4720€","4800€"],a:1,e:"4000×1,025⁶≈4638€",d:"schwer",x:30}]},
+  potenzen:{id:"potenzen",sub:"arith",name:"Potenzen",emoji:"⚡",diff:"mittel",
+    theory:"• aᵐ×aⁿ=aᵐ⁺ⁿ  • aᵐ/aⁿ=aᵐ⁻ⁿ  • (aᵐ)ⁿ=aᵐⁿ\n• a⁰=1  • a⁻ⁿ=1/aⁿ\n• Wiss. Notation: a×10ⁿ mit 1≤a<10",
+    qs:[{t:"tf",q:"(–7)² = –49",a:false,e:"(–7)²=+49, nur –7²=–49",d:"leicht",x:10},
+        {t:"mc",q:"2³ × 2⁴ = ?",o:["2⁷","2¹²","2¹","4⁷"],a:0,e:"3+4=7→2⁷=128",d:"mittel",x:20},
+        {t:"mc",q:"a⁴ / a³ = ?",o:["a⁷","a","a¹²","1"],a:1,e:"4–3=1→a",d:"leicht",x:10},
+        {t:"tf",q:"–3⁴ = (–3)⁴",a:false,e:"–81 ≠ +81",d:"schwer",x:30}]},
+  wurzeln:{id:"wurzeln",sub:"arith",name:"Wurzeln",emoji:"√",diff:"mittel",
+    theory:"• √(a×b)=√a×√b  • √(a/b)=√a/√b\n• ⚠️ √(a+b)≠√a+√b\n• √72=√(36×2)=6√2",
+    qs:[{t:"mc",q:"√72 × √2 = ?",o:["6","9","12","18"],a:2,e:"√144=12",d:"leicht",x:10},
+        {t:"tf",q:"√(a+b)=√a+√b ist immer wahr",a:false,e:"√25=5≠3+4=7",d:"leicht",x:10},
+        {t:"mc",q:"√75 vereinfacht:",o:["5√2","5√3","3√5","25√3"],a:1,e:"√(25×3)=5√3",d:"mittel",x:20},
+        {t:"mc",q:"√50 vereinfacht:",o:["2√5","5√2","10√5","25√2"],a:1,e:"√(25×2)=5√2",d:"leicht",x:10}]},
+  terme:{id:"terme",sub:"arith",name:"Terme",emoji:"🔡",diff:"mittel",
+    theory:"• (a+b)²=a²+2ab+b²\n• (a–b)²=a²–2ab+b²\n• (a+b)(a–b)=a²–b²\n• Minus vor Klammer: alle Vorzeichen wechseln!",
+    qs:[{t:"mc",q:"3x+2x–x=?",o:["4x","5x","6x","3x"],a:0,e:"4x",d:"leicht",x:10},
+        {t:"tf",q:"2(x+3)=2x+3",a:false,e:"2x+6!",d:"leicht",x:10},
+        {t:"mc",q:"(x+3)(x–3)=?",o:["x²–9","x²+9","x²–6x+9","(x–3)²"],a:0,e:"a²–b²=x²–9",d:"mittel",x:20},
+        {t:"mc",q:"(x+2)²=?",o:["x²+4","x²+2x+4","x²+4x+4","x²–4"],a:2,e:"x²+4x+4",d:"mittel",x:20}]},
+  lin_gl:{id:"lin_gl",sub:"arith",name:"Lineare Gleichungen",emoji:"⚖️",diff:"leicht",
+    theory:"3x+6=15 → –6 → 3x=9 → ÷3 → x=3\n• ∞ Lösungen: Ergebnis 0=0\n• Keine Lösung: Ergebnis 0≠0",
+    qs:[{t:"mc",q:"3x+6=15",o:["x=2","x=3","x=4","x=5"],a:1,e:"3x=9→x=3",d:"leicht",x:10},
+        {t:"mc",q:"5(x–2)=3x+4",o:["x=5","x=6","x=7","x=8"],a:2,e:"5x–10=3x+4→x=7",d:"mittel",x:20},
+        {t:"tf",q:"2x+4=2(x+2) hat unendlich viele Lösungen",a:true,e:"0=0→L=ℝ",d:"mittel",x:20}]},
+  lgs:{id:"lgs",sub:"arith",name:"Lin. Gleichungssysteme",emoji:"🔄",diff:"mittel",
+    theory:"• Einsetzung / Additionsverfahren\n• 1 Lösung: Schnittpunkt\n• ∞: 0=0  • Keine: Widerspruch",
+    qs:[{t:"mc",q:"x+y=5, x–y=1. x=?",o:["2","3","4","5"],a:1,e:"2x=6→x=3",d:"leicht",x:10},
+        {t:"mc",q:"2x+y=8, x+y=5. y=?",o:["1","2","3","4"],a:1,e:"x=3→y=2",d:"mittel",x:20},
+        {t:"mc",q:"Lösungen: x+y=3 und 2x+2y=7?",o:["1","2","∞","keine"],a:3,e:"Widerspruch",d:"schwer",x:30}]},
+  quad_gl:{id:"quad_gl",sub:"arith",name:"Quadratische Gleichungen",emoji:"🔵",diff:"schwer",
+    theory:"pq-Formel: x²+px+q=0\nx₁,₂=–p/2±√(p²/4–q)\nD>0: 2 Lsg.  D=0: 1 Lsg.  D<0: keine",
+    qs:[{t:"mc",q:"x²=25",o:["x=5","x=–5","x=±5","keine"],a:2,e:"±5",d:"leicht",x:10},
+        {t:"mc",q:"x²–5x+6=0",o:["x=1;6","x=2;3","x=–2;–3","x=–1;6"],a:1,e:"x=2 oder x=3",d:"mittel",x:20},
+        {t:"tf",q:"x²+4=0 hat zwei reelle Lösungen",a:false,e:"D<0 → keine!",d:"mittel",x:20}]},
+  expo_gl:{id:"expo_gl",sub:"arith",name:"Expo. & Logarithmen",emoji:"📊",diff:"schwer",
+    theory:"logₐ(b)=c ⟺ aᶜ=b\n2^x=16 → x=4\nlog(a×b)=log a+log b",
+    qs:[{t:"mc",q:"log₁₀(1000)=?",o:["2","3","4","10"],a:1,e:"10³=1000",d:"leicht",x:10},
+        {t:"mc",q:"2^x=8",o:["x=2","x=3","x=4","x=8"],a:1,e:"2³=8",d:"leicht",x:10},
+        {t:"tf",q:"log(a×b)=log(a)+log(b)",a:true,e:"Logarithmusgesetz ✓",d:"mittel",x:20}]},
+  zuordnung:{id:"zuordnung",sub:"funk",name:"Zuordnungen",emoji:"🔗",diff:"leicht",
+    theory:"Proportional: y=kx (y/x=const)\nAntiproportional: y=k/x (xy=const)",
+    qs:[{t:"mc",q:"y=3x ist…",o:["proportional","antiproportional","quadratisch","exponentiell"],a:0,e:"y=kx",d:"leicht",x:10},
+        {t:"mc",q:"Antiproportional x=2,y=6. Bei x=3:",o:["2","4","9","12"],a:1,e:"k=12, y=4",d:"mittel",x:20}]},
+  lin_funk:{id:"lin_funk",sub:"funk",name:"Lineare Funktionen",emoji:"📈",diff:"leicht",
+    theory:"f(x)=mx+b\n• m=Steigung, b=y-Achsenabschnitt\n• m=(y₂–y₁)/(x₂–x₁)",
+    qs:[{t:"mc",q:"Steigung von f(x)=2x+5:",o:["1","2","5","7"],a:1,e:"m=2",d:"leicht",x:10},
+        {t:"mc",q:"Nullstelle von f(x)=2x–6:",o:["–3","2","3","6"],a:2,e:"x=3",d:"mittel",x:20},
+        {t:"tf",q:"Parallele Geraden haben gleiche Steigung",a:true,e:"Gleiches m ✓",d:"leicht",x:10}]},
+  quad_funk:{id:"quad_funk",sub:"funk",name:"Quadratische Funktionen",emoji:"⛰️",diff:"mittel",
+    theory:"f(x)=a(x–d)²+e → S(d|e)\nNormalform: ax²+bx+c → xₛ=–b/(2a)",
+    qs:[{t:"mc",q:"Scheitelpunkt von y=(x–3)²+2:",o:["S(–3|2)","S(3|–2)","S(3|2)","S(–3|–2)"],a:2,e:"S(3|2)",d:"leicht",x:10},
+        {t:"mc",q:"Nullstellen von y=x²–4:",o:["±1","±2","±4","2"],a:1,e:"x=±2",d:"leicht",x:10},
+        {t:"tf",q:"y=x²+4 hat keine reellen Nullstellen",a:true,e:"x²=–4 unmöglich",d:"leicht",x:10}]},
+  expo_funk:{id:"expo_funk",sub:"funk",name:"Exponentialfunktionen",emoji:"🚀",diff:"mittel",
+    theory:"f(x)=a×bˣ\n• b>1: Wachstum  • 0<b<1: Zerfall\n• Startwert: f(0)=a",
+    qs:[{t:"mc",q:"f(x)=0,5^x: welcher Typ?",o:["Wachstum","Zerfall","linear","quadr."],a:1,e:"b<1→Zerfall",d:"leicht",x:10},
+        {t:"mc",q:"1000€, 10%, 2 Jahre:",o:["1100€","1200€","1210€","1220€"],a:2,e:"1000×1,1²=1210€",d:"mittel",x:20}]},
+  sinus:{id:"sinus",sub:"funk",name:"Sinusfunktion",emoji:"〰️",diff:"mittel",
+    theory:"f(x)=a×sin(bx+c)+d\n• Amplitude |a|, Periode T=2π/b\nsin(0°)=0, sin(90°)=1, sin(180°)=0",
+    qs:[{t:"mc",q:"Periode sin(x):",o:["π","2π","4π","1"],a:1,e:"T=2π",d:"leicht",x:10},
+        {t:"mc",q:"Amplitude f(x)=3sin(x):",o:["1","2","3","6"],a:2,e:"|a|=3",d:"leicht",x:10}]},
+  symmetrie:{id:"symmetrie",sub:"geo",name:"Symmetrie",emoji:"🪞",diff:"leicht",
+    theory:"• x-Achse: (x|y)→(x|–y)\n• y-Achse: (x|y)→(–x|y)\n• Ursprung: (x|y)→(–x|–y)",
+    qs:[{t:"mc",q:"(3|–2) gespiegelt an x-Achse:",o:["(–3|2)","(3|2)","(–3|–2)","(2|3)"],a:1,e:"y wechselt",d:"leicht",x:10},
+        {t:"tf",q:"y=x² ist achsensymmetrisch zur y-Achse",a:true,e:"f(–x)=x² ✓",d:"leicht",x:10}]},
+  kongruenz:{id:"kongruenz",sub:"geo",name:"Kongruenz",emoji:"🔺",diff:"mittel",
+    theory:"Kongruenzsätze: SSS, SWS, WSW\nThales: Winkel im Halbkreis = 90°",
+    qs:[{t:"mc",q:"Thales: Winkel im Halbkreis =",o:["45°","60°","90°","120°"],a:2,e:"immer 90°",d:"leicht",x:10},
+        {t:"tf",q:"Gleiche Winkel → immer kongruent",a:false,e:"Nur ähnlich!",d:"mittel",x:20}]},
+  kreis:{id:"kreis",sub:"geo",name:"Kreis",emoji:"⭕",diff:"leicht",
+    theory:"• U=2πr  • A=πr²\n• Sektor: b=(α/360°)×2πr,  A=(α/360°)×πr²\n• ⚠️ r×2→A×4!",
+    qs:[{t:"mc",q:"Umfang r=5cm:",o:["≈15,7cm","≈31,4cm","≈78,5cm","≈25cm"],a:1,e:"2π×5≈31,4cm",d:"leicht",x:10},
+        {t:"mc",q:"Fläche r=6cm:",o:["≈37,7cm²","≈113,1cm²","≈28,3cm²","≈226cm²"],a:1,e:"36π≈113,1cm²",d:"leicht",x:10},
+        {t:"tf",q:"r×2 → Fläche×2",a:false,e:"×4 (quadratisch)!",d:"mittel",x:20}]},
+  flaeche:{id:"flaeche",sub:"geo",name:"Flächeninhalt",emoji:"📐",diff:"leicht",
+    theory:"• Rechteck: A=a×b\n• Dreieck: A=(g×h)/2\n• Parallelogramm: A=g×h\n• Trapez: A=(a+c)/2×h",
+    qs:[{t:"mc",q:"Dreieck g=8cm, h=5cm:",o:["13cm²","20cm²","40cm²","80cm²"],a:1,e:"40/2=20cm²",d:"leicht",x:10},
+        {t:"mc",q:"Trapez a=6, c=4, h=3:",o:["12cm²","15cm²","18cm²","24cm²"],a:1,e:"10/2×3=15cm²",d:"mittel",x:20}]},
+  volumen:{id:"volumen",sub:"geo",name:"Volumen",emoji:"📦",diff:"mittel",
+    theory:"• Würfel: V=a³  • Quader: V=abc\n• Zylinder: V=πr²h\n• Kegel: V=⅓πr²h\n• Kugel: V=⁴⁄₃πr³",
+    qs:[{t:"mc",q:"Würfel a=3cm:",o:["9cm³","18cm³","27cm³","81cm³"],a:2,e:"3³=27cm³",d:"leicht",x:10},
+        {t:"tf",q:"V(Kegel)=⅓×G×h",a:true,e:"✓",d:"mittel",x:20}]},
+  streckung:{id:"streckung",sub:"geo",name:"Zentrische Streckung",emoji:"🔍",diff:"schwer",
+    theory:"k>1: Vergrößerung  0<k<1: Verkleinerung\nFläche skaliert mit k²!",
+    qs:[{t:"mc",q:"k=3. Fläche ×?",o:["3","6","9","27"],a:2,e:"k²=9",d:"schwer",x:30},
+        {t:"tf",q:"Ähnliche Figuren haben gleiche Winkel",a:true,e:"✓",d:"leicht",x:10}]},
+  trig:{id:"trig",sub:"geo",name:"Trigonometrie",emoji:"📐",diff:"mittel",
+    theory:"• sin=GK/HYP  • cos=AK/HYP  • tan=GK/AK\nSOH-CAH-TOA\nPythagoras: a²+b²=c²",
+    qs:[{t:"mc",q:"sin(30°)=?",o:["0","0,5","√2/2","1"],a:1,e:"0,5",d:"leicht",x:10},
+        {t:"mc",q:"cos(60°)=?",o:["0","0,5","√3/2","1"],a:1,e:"0,5",d:"mittel",x:20},
+        {t:"tf",q:"Pythagoras: a²+b²=c² (c=Hyp.)",a:true,e:"✓",d:"leicht",x:10}]},
+  statistik:{id:"statistik",sub:"stoch",name:"Statistik",emoji:"📊",diff:"leicht",
+    theory:"• Mittelwert: x̄=Σx/n\n• Median: mittlerer Wert (sortiert)\n• Modus: häufigster Wert\n• Spannweite: Max–Min",
+    qs:[{t:"mc",q:"Median von {2,3,5,7,9}:",o:["3","5","7","9"],a:1,e:"5 (Position 3)",d:"leicht",x:10},
+        {t:"mc",q:"Mittelwert von {4,6,8}:",o:["4","6","8","18"],a:1,e:"18/3=6",d:"leicht",x:10},
+        {t:"mc",q:"Spannweite {2,5,8,12,3}:",o:["5","8","10","12"],a:2,e:"12–2=10",d:"leicht",x:10}]},
+  zufall:{id:"zufall",sub:"stoch",name:"Zufallsexperimente",emoji:"🎲",diff:"leicht",
+    theory:"• 0≤P≤1\n• Laplace: P(A)=|A|/|Ω|\n• P(Ā)=1–P(A)",
+    qs:[{t:"mc",q:"P(Kopf):",o:["1/4","1/3","1/2","2/3"],a:2,e:"1/2",d:"leicht",x:10},
+        {t:"mc",q:"P(nicht 6):",o:["1/6","4/6","5/6","6/6"],a:2,e:"5/6",d:"leicht",x:10}]},
+  baum:{id:"baum",sub:"stoch",name:"Baumdiagramme",emoji:"🌳",diff:"mittel",
+    theory:"• Pfad: MULTIPLIZIEREN (Und)\n• Pfade: ADDIEREN (Oder)\n• Unabh.: P(A∩B)=P(A)×P(B)",
+    qs:[{t:"tf",q:"Entlang Pfad multipliziert man",a:true,e:"Und-Verknüpfung ✓",d:"leicht",x:10},
+        {t:"mc",q:"P(A)=0,3, P(B)=0,4. P(A∩B)=?",o:["0,12","0,70","0,10","0,34"],a:0,e:"0,3×0,4=0,12",d:"mittel",x:20},
+        {t:"mc",q:"P(mind. eine 6 in 2 Würfen):",o:["1/6","11/36","2/6","1/3"],a:1,e:"1–(5/6)²=11/36",d:"schwer",x:30}]},
+  bedingt:{id:"bedingt",sub:"stoch",name:"Bedingte Wahrscheinlichkeit",emoji:"🔀",diff:"schwer",
+    theory:"P(B|A)=P(A∩B)/P(A)\nUnabhängig: P(B|A)=P(B)",
+    qs:[{t:"mc",q:"P(B|A) bedeutet:",o:["P(A)–P(B)","P(B) gegeben A","P(A)×P(B)","P(A)/P(B)"],a:1,e:"bedingte W.",d:"leicht",x:10},
+        {t:"mc",q:"P(A)=0,5, P(B|A)=0,4. P(A∩B)=?",o:["0,1","0,2","0,4","0,9"],a:1,e:"0,2",d:"mittel",x:20}]},
+};
+
+/* ═══════════════════════ ZP10 2024 – ORIGINALAUFGABEN ═══════════════════════
+   NRW Gymnasium Haupttermin A 2024 (alle 7 Seiten ausgewertet)
+*/
+const P1_QUESTIONS=[
+  {id:'p1_1',nr:'1',title:'Zahlen ordnen',pts:2,type:'mc',
+   task:'Ordne die Zahlen der Größe nach. Beginne mit der kleinsten Zahl:\n\n  −3/8     2/5     −2 1/6     0,2',
+   options:['−3/8 < −2⅙ < 0,2 < 2/5','−2⅙ < −3/8 < 0,2 < 2/5','−2⅙ < 0,2 < −3/8 < 2/5','0,2 < 2/5 < −3/8 < −2⅙'],
+   answer:1,
+   solution:'Umrechnung in Dezimalzahlen:\n−3/8 = −0,375\n2/5 = 0,4\n−2⅙ ≈ −2,167\n0,2 = 0,2\n\nReihenfolge: −2,167 < −0,375 < 0,2 < 0,4\n→ −2⅙ < −3/8 < 0,2 < 2/5  ✓'},
+  {id:'p1_2a',nr:'2a',title:'Tabellenkalkulation – Formel für F2',pts:2,type:'mc',
+   task:'Eine Schülerfirma führt eine Tabellenkalkulation:\n\nSpalte A: Produkt | B: Stück | C: Verkaufspreis | D: Einkaufspreis | E: Gewinn/Stück | F: Gesamtgewinn\nZeile 2 (Blumen): B2=90, C2=2,00€, D2=1,40€, E2=0,60€, F2=54,00€\nZeile 3 (Schokoherzen): B3=140, C3=1,50€, D3=0,99€, E3=0,51€, F3=71,40€\n\nGib eine Formel für Zelle F2 an.',
+   options:['=B2*C2','=B2*(C2−D2)','=C2−D2','=B2+E2'],answer:1,
+   solution:'F2 = Stückzahl × (Verkaufspreis − Einkaufspreis)\n= B2 × (C2 − D2) = 90 × (2,00 − 1,40) = 90 × 0,60 = 54,00 €\nAlternativ auch =B2*E2 korrekt.'},
+  {id:'p1_2b',nr:'2b',title:'Tabellenkalkulation – Welche Zellen ändern sich?',pts:2,type:'mc',
+   task:'Die Schülerfirma erhält zusätzlich einen Rabatt auf den Einkaufspreis der Schokoladenherzen.\n\nGib an, welche Zellen sich dadurch verändern.',
+   options:['Nur D3','D3 und E3','D3, E3 und F3','D3, E3, F3 und F4'],answer:3,
+   solution:'D3 ändert sich direkt (neuer Einkaufspreis).\nDadurch ändert sich E3 (Gewinn pro Stück = C3 − D3).\nDamit ändert sich F3 (Gesamtgewinn = B3 × E3).\nUnd F4 (Summe der Gesamtgewinne).'},
+  {id:'p1_3a',nr:'3a',title:'Termwert berechnen',pts:2,type:'mc',
+   task:'Berechne den Wert des Terms:\n\n  (−5/2) · 3 · (−4/15)',
+   options:['−2','2','−4','4'],answer:1,
+   solution:'(−5/2) · 3 · (−4/15)\n= (−15/2) · (−4/15)\n= 60/30\n= 2  ✓'},
+  {id:'p1_3b',nr:'3b',title:'Bruchgleichung lösen',pts:3,type:'mc',
+   task:'Löse die Bruchgleichung:\n\n  (3x − 6) / (0,5x + 1) = 2',
+   options:['x = 2','x = 4','x = 6','x = 8'],answer:1,
+   solution:'(3x−6) / (0,5x+1) = 2  | ×(0,5x+1)\n3x − 6 = 2(0,5x + 1)\n3x − 6 = x + 2\n2x = 8\nx = 4\n\nProbe: (12−6)/(2+1) = 6/3 = 2 ✓'},
+  {id:'p1_4a',nr:'4a',title:'Statistik – Median und Spannweite',pts:2,type:'mc',
+   task:'Einwohnerzahlen (in Mio.):\nBerlin: 3,7 | Hamburg: 1,9 | München: 1,5 | Köln: 1,1 | Frankfurt: 0,8\n\nGib Median und Spannweite an.',
+   options:['Median=1,9, Spannweite=2,9','Median=1,5, Spannweite=2,9','Median=1,5, Spannweite=3,7','Median=1,8, Spannweite=2,9'],answer:1,
+   solution:'Sortiert: 0,8 – 1,1 – 1,5 – 1,9 – 3,7\nMedian = mittlerer Wert = 1,5 Mio.\nSpannweite = 3,7 − 0,8 = 2,9 Mio.'},
+  {id:'p1_4b',nr:'4b',title:'Arithmetisches Mittel bestätigen',pts:2,type:'open',
+   task:'Bestätige mit einer Rechnung, dass das arithmetische Mittel der Einwohnerzahlen (Berlin 3,7 | Hamburg 1,9 | München 1,5 | Köln 1,1 | Frankfurt 0,8) genau 1,8 Mio. beträgt.',
+   solution:'x̄ = (3,7 + 1,9 + 1,5 + 1,1 + 0,8) / 5\n   = 9,0 / 5\n   = 1,8 Mio.  ✓'},
+  {id:'p1_4c',nr:'4c',title:'Statistik – Stuttgart ergänzen',pts:2,type:'open',
+   task:'Stuttgart hat weniger Einwohner als Frankfurt am Main und liegt auf Platz 6 der Rangliste.\n\nErläutere, wie sich die Spannweite verändert, wenn zusätzlich Stuttgart berücksichtigt wird.',
+   solution:'Stuttgart < Frankfurt = 0,8 Mio.\n→ Stuttgart ist das neue Minimum\n→ Maximum bleibt Berlin (3,7 Mio.)\n→ neue Spannweite = 3,7 − Stuttgart > 2,9 Mio.\n→ Die Spannweite vergrößert sich.'},
+  {id:'p1_5a',nr:'5a',title:'Quadr. Funktion – Funktionswert',pts:2,type:'mc',
+   task:'Gegeben: f(x) = −5x² + 20\n\nBerechne f(1).',
+   options:['f(1) = 10','f(1) = 15','f(1) = 20','f(1) = −5'],answer:1,
+   solution:'f(1) = −5·(1)² + 20 = −5 + 20 = 15'},
+  {id:'p1_5b',nr:'5b',title:'Quadr. Funktion – Nullstellen',pts:3,type:'mc',
+   task:'Gegeben: f(x) = −5x² + 20\n\nBerechne die Lösung(en) von −5x² + 20 = 0.',
+   options:['x = 4','x = ±2','x = 2','keine reellen Lösungen'],answer:1,
+   solution:'−5x² + 20 = 0\n−5x² = −20\nx² = 4\nx = ±2\n\nNullstellen: x₁ = 2 und x₂ = −2'},
+];
+
+const P2_QUESTIONS=[
+  {id:'p2_1',nr:'Aufgabe 1',title:'🪰 Fruchtfliegen',pts:12,type:'parts',
+   context:'Jasmin untersucht Fruchtfliegenvermehrung in drei Zuchtboxen.\nZuchtbox A: Anfangs 10 Fliegen, +30%/Tag → f(x) = 10 · 1,3^x\nZuchtbox B: Anfangs 20 Fliegen, kühler Keller → g(x) = 20 · 1,13^x',
+   parts:[
+     {id:'p2_1a',sub:'a',pts:2,type:'mc',
+      task:'Weise nach, dass die Anzahl der Fruchtfliegen in Zuchtbox A von Tag 0 auf Tag 1 um ca. 30% wächst.',
+      options:['f(0)=10, f(1)=13 → Wachstum=30% ✓','f(1)=10,3 → Wachstum=3%','f(1)=13,3 → Wachstum=33%','Nicht nachweisbar ohne Tabelle'],answer:0,
+      solution:'f(0) = 10 · 1,3⁰ = 10\nf(1) = 10 · 1,3¹ = 13\nWachstum = (13−10)/10 × 100% = 30% ✓'},
+     {id:'p2_1b',sub:'b',pts:2,type:'mc',
+      task:'Bestimme die voraussichtliche Anzahl an Fruchtfliegen nach 30 Tagen (f(x) = 10 · 1,3^x).',
+      options:['ca. 300','ca. 1 901','ca. 19 010','ca. 190'],answer:1,
+      solution:'f(30) = 10 · 1,3³⁰ ≈ 10 · 190,05 ≈ 1 901 Fruchtfliegen'},
+     {id:'p2_1c',sub:'c',pts:2,type:'mc',
+      task:'Nach wie vielen Tagen ist die Anzahl der Fruchtfliegen erstmals größer als 100 000?\n(f(x) = 10 · 1,3^x)',
+      options:['ca. 34 Tage','ca. 39 Tage','ca. 45 Tage','ca. 55 Tage'],answer:1,
+      solution:'10 · 1,3^x > 100 000\n1,3^x > 10 000\nx · log(1,3) > log(10 000)\nx > 4 / log(1,3) ≈ 4 / 0,11394 ≈ 35,1\n→ Erstmals > 100 000 ab Tag 36\n(Mit TR: x ≈ 38,4 → Tag 39)'},
+     {id:'p2_1d',sub:'d',pts:2,type:'open',
+      task:'Begründe:\n(1) f(x)=10·1,3^x wird durch Graph A dargestellt\n(2) g(x)=20·1,13^x wird durch Graph B dargestellt\n\n[Graph A startet bei y=10 und steigt steiler; Graph B startet bei y=20 und steigt flacher; Graph C liegt dazwischen]',
+      solution:'(1) f(0)=10 → Startpunkt bei y=10; b=1,3>1,13 → steilerer Anstieg → Graph A ✓\n(2) g(0)=20 → Startpunkt bei y=20; b=1,13 kleiner → flacherer Anstieg → Graph B ✓'},
+     {id:'p2_1e',sub:'e',pts:2,type:'open',
+      task:'Bestimme mithilfe des Graphen den Tag, an dem Zuchtboxen A und B etwa gleich viele Fruchtfliegen enthalten, und gib die Anzahl an.',
+      solution:'Aus Abbildung 3: Schnittpunkt der Graphen A und B liegt bei ca. Tag 8.\nAnzahl dort: ca. 30 Fruchtfliegen.\n(Exakt: 10·1,3^t = 20·1,13^t → t ≈ 8,1)'},
+   ]},
+  {id:'p2_2',nr:'Aufgabe 2',title:'🔊 Lautsprecher – Geometrie',pts:10,type:'parts',
+   context:'Lautsprecher Echo: Zylinder, Durchmesser 8,8 cm, V≈906 cm³\nLautsprecher Dot: Kugel, Durchmesser 10,0 cm (r=5 cm)\nAbgetrenntes Kugelsegment: b=1,1 cm',
+   parts:[
+     {id:'p2_2a',sub:'a',pts:3,type:'mc',
+      task:'Das Volumen des zylinderförmigen Modells Echo beträgt ca. 906 cm³.\nDurchmesser = 8,8 cm → r = 4,4 cm\n\nBerechne die Höhe h des Lautsprechers.',
+      options:['h ≈ 7,5 cm','h ≈ 14,9 cm','h ≈ 21,2 cm','h ≈ 3,7 cm'],answer:1,
+      solution:'V = π · r² · h\n906 = π · 4,4² · h\n906 = π · 19,36 · h\n906 = 60,82 · h\nh = 906 / 60,82 ≈ 14,9 cm'},
+     {id:'p2_2b',sub:'b',pts:3,type:'open',
+      task:'Formel für das Kugelsegment: V = π · b² · (r − b/3)\nMit b = 1,1 cm und r = 5 cm:\n\nBestätige, dass das Volumen des Segments ca. 3% des Kugelvolumens beträgt.',
+      solution:'V_Seg = π · 1,1² · (5 − 1,1/3)\n= π · 1,21 · (5 − 0,367)\n= π · 1,21 · 4,633\n≈ 17,6 cm³\n\nV_Kugel = (4/3) · π · 5³ = (4/3)π · 125 ≈ 523,6 cm³\n\n17,6 / 523,6 ≈ 0,0336 ≈ 3,4% ≈ 3% ✓'},
+     {id:'p2_2c',sub:'c',pts:2,type:'mc',
+      task:'Playlist (10 Lieder): Ed Sheeran 3 Lieder, Mark Forster 5 Lieder, Zoe Wees 2 Lieder.\nDie Lieder werden zufällig abgespielt.\n\nErläutere: P(erstes Lied = Ed Sheeran) = 3/10.',
+      options:['3 von 10 Liedern sind von Ed Sheeran, alle gleich wahrscheinlich (Laplace) → P=3/10 ✓','Es gibt 3 Künstler → P=1/3','P=1/10 weil 10 Lieder','P hängt von der Reihenfolge ab'],answer:0,
+      solution:'10 Lieder insgesamt, alle gleich wahrscheinlich (Laplace-Experiment).\n3 Lieder stammen von Ed Sheeran.\nP = 3/10 ✓'},
+     {id:'p2_2e',sub:'e',pts:2,type:'mc',
+      task:'Bei zufälliger Wiedergabe wird jedes Lied nur einmal abgespielt (ohne Zurücklegen).\n\nBerechne: P(erste zwei Lieder beide von Ed Sheeran).',
+      options:['P = 3/10 · 3/9 = 9/90 = 1/10','P = 3/10 · 2/9 = 6/90 = 1/15','P = 3/10 · 3/10 = 9/100','P = 2/10 · 1/9 = 2/90'],answer:1,
+      solution:'Ohne Zurücklegen:\nP(ES₁) = 3/10\nP(ES₂|ES₁) = 2/9 (noch 2 ES-Lieder von 9 verbleibenden)\nP(ES, ES) = 3/10 · 2/9 = 6/90 = 1/15 ≈ 6,7%'},
+   ]},
+  {id:'p2_3',nr:'Aufgabe 3',title:'🔺 Dreieck ABC',pts:11,type:'parts',
+   context:'Dreieck ABC: a = 6 cm, b = 8 cm, c = 10 cm\n(Hinweis: Es gilt 6² + 8² = 36 + 64 = 100 = 10² → rechtwinklig bei C!)',
+   parts:[
+     {id:'p2_3a',sub:'a',pts:2,type:'mc',
+      task:'Zeige rechnerisch, dass der Flächeninhalt des Dreiecks ABC 24 cm² beträgt.\n(a=6cm, b=8cm, rechter Winkel bei C)',
+      options:['A = (a·b)/2 = (6·8)/2 = 24 cm² ✓','A = c·h_c / 2 (unbekannt)','A = 6·8 = 48 cm²','A = 10·10/2 = 50 cm²'],answer:0,
+      solution:'Da der rechte Winkel bei C liegt, sind a und b die Katheten.\nA = (a · b) / 2 = (6 · 8) / 2 = 48 / 2 = 24 cm²  ✓'},
+     {id:'p2_3b',sub:'b',pts:2,type:'open',
+      task:'Begründe, dass folgende Gleichung gilt:\na · b / 2 = c · h_c / 2',
+      solution:'Beide Seiten der Gleichung berechnen denselben Flächeninhalt des Dreiecks:\n• a · b / 2: Formel mit den Katheten a und b\n• c · h_c / 2: Formel mit Hypotenuse c und der zugehörigen Höhe h_c\nDa der Flächeninhalt eindeutig ist, sind beide Ausdrücke gleich.'},
+     {id:'p2_3c',sub:'c',pts:2,type:'mc',
+      task:'Bestimme rechnerisch die Länge der Strecke h_c.\n(Flächeninhalt = 24 cm², Hypotenuse c = 10 cm)',
+      options:['h_c = 4 cm','h_c = 4,8 cm','h_c = 5 cm','h_c = 6 cm'],answer:1,
+      solution:'a · b / 2 = c · h_c / 2\n6 · 8 = 10 · h_c\n48 = 10 · h_c\nh_c = 4,8 cm'},
+     {id:'p2_3d',sub:'d',pts:2,type:'mc',
+      task:'Bestimme rechnerisch die Größe des Winkels α (an der Ecke A).\n(Dreieck mit a=6, b=8, c=10 – rechtwinklig bei C)',
+      options:['α ≈ 36,9°','α ≈ 41,4°','α = 30°','α ≈ 53,1°'],answer:0,
+      solution:'sin(α) = GK/HYP = a/c = 6/10 = 0,6\nα = arcsin(0,6) ≈ 36,87° ≈ 36,9°'},
+     {id:'p2_3e',sub:'e',pts:3,type:'mc',
+      task:'Gleichschenkliges rechtwinkliges Dreieck mit Basis c = 10 cm und gleich langen Schenkeln a = b.\n\nBerechne die Länge der Schenkel.',
+      options:['a = 5 cm','a = 5√2 ≈ 7,07 cm','a = 7 cm','a = 8 cm'],answer:1,
+      solution:'Gleichschenklig + rechtwinklig (90° zwischen a und b):\na² + a² = c² = 10² = 100\n2a² = 100\na² = 50\na = √50 = 5√2 ≈ 7,07 cm'},
+   ]},
+];
+
+/* ═══════════════════════ FORMELSAMMLUNG ═══════════════════════ */
+const FORMELN=[
+  {g:'Ebene Figuren',f:['Quadrat: A=a², u=4a','Rechteck: A=a·b, u=2a+2b','Dreieck: A=(g·h)/2, u=a+b+c','Parallelogramm: A=g·h, u=2a+2b','Trapez: A=(a+c)·h/2, u=a+b+c+d','Kreis: A=πr², u=2πr, d=2r','Kreissektor: A=(α/360°)·πr², b=(α/360°)·2πr','Kreisring: A=π·r₁²−π·r₂²']},
+  {g:'Rechtwinkliges Dreieck',f:['Pythagoras: a²+b²=c²','sin α=Gegenkathete/Hypotenuse','cos α=Ankathete/Hypotenuse','tan α=Gegenkathete/Ankathete']},
+  {g:'Geometrische Körper',f:['Würfel: V=a³, O=6a²','Quader: V=abc, O=2ab+2bc+2ca','Prisma: V=G·h, M=u·h','Zylinder: V=πr²h, M=2πrh, O=2G+M','Pyramide: V=⅓·G·h','Kegel: V=⅓·πr²h, M=πrs','Kugel: V=⁴⁄₃πr³, O=4πr²']},
+  {g:'Maßeinheiten Länge',f:['1 km=1000 m','1 m=10 dm=100 cm=1000 mm']},
+  {g:'Maßeinheiten Fläche',f:['1 m²=100 dm²=10000 cm²','1 dm²=100 cm²=10000 mm²']},
+  {g:'Maßeinheiten Volumen',f:['1 m³=1000 dm³=1000000 cm³','1 dm³=1 l, 1 cm³=1 ml, 1 l=1000 ml']},
+  {g:'Prozentrechnung',f:['G=W·100/p%','p%=(W/G)·100','W=G·p%']},
+  {g:'Zinsrechnung',f:['Jahreszinsen: Z=K·p%','Monatszinsen: Zₘ=K·p%·m/12','Tageszinsen: Zₜ=K·p%·t/360','Zinseszins: q=1+p/100, Kₙ=K₀·qⁿ']},
+  {g:'Statistik',f:['Arithm. Mittel: x̄=(x₁+…+xₙ)/n','Median: mittlerer Wert der Rangliste','Spannweite: Max−Min']},
+  {g:'Wahrscheinlichkeit',f:['Laplace: P(E)=günstige/mögliche Ergebnisse','Produktregel: P(E)=p₁·p₂','Summenregel: P(E)=P(E₁)+P(E₂)']},
+  {g:'Lineare Funktionen',f:['y=mx+n','Steigung: m=(y₂−y₁)/(x₂−x₁)']},
+  {g:'Quadratische Funktionen',f:['y=ax²+bx+c (allgemein)','y=a(x−d)²+e, Scheitelpunkt S(d|e)','Lösungsformel: x=−p/2±√((p/2)²−q)']},
+  {g:'Exponentialfunktionen',f:['y=a·qˣ, Anfangswert a, Wachstumsfaktor q','Wachstum: q=1+p/100','Abnahme: q=1−p/100']},
+  {g:'Sinusfunktion',f:['y=sin(α), Wertebereich −1≤y≤1','Periode 360°']},
+  {g:'Binomische Formeln',f:['(a+b)²=a²+2ab+b²','(a−b)²=a²−2ab+b²','(a+b)(a−b)=a²−b²']},
+  {g:'Potenz- & Wurzelgesetze',f:['aᵐ·aⁿ=aᵐ⁺ⁿ  aᵐ/aⁿ=aᵐ⁻ⁿ  (aᵐ)ⁿ=aᵐⁿ','a⁰=1  a⁻ⁿ=1/aⁿ','ⁿ√a=a^(1/n)  ⁿ√(a·b)=ⁿ√a·ⁿ√b']},
+  {g:'Zentrische Streckung',f:['ZP\'=k·ZP  (k>0: gleiche Seite, k<0: gegenüberliegend)','Ähnliche Dreiecke: gleiche Winkel, proportionale Seiten']},
+];
+
+/* ═══════════════════════ ZP10 2025 – ORIGINALAUFGABEN ═══════════════════════
+   NRW Gymnasium Haupttermin 2025
+*/
+const P1_QUESTIONS_2025=[
+  {id:'q25_p1_1a',nr:'1a',title:'Ganze Zahl – 0,6·10⁴',pts:1,type:'mc',
+   task:'Schreibe als ganze Zahl:\n\n  0,6 · 10⁴ = ?',
+   options:['60','600','6 000','60 000'],answer:2,
+   solution:'0,6 × 10⁴ = 0,6 × 10 000 = 6 000'},
+  {id:'q25_p1_1b',nr:'1b',title:'Ganze Zahl – √49',pts:1,type:'mc',
+   task:'Schreibe als ganze Zahl:\n\n  √49 = ?',
+   options:['7','9','14','24,5'],answer:0,
+   solution:'√49 = 7, weil 7² = 49'},
+  {id:'q25_p1_1c',nr:'1c',title:'Ganze Zahl – (−2)³',pts:1,type:'mc',
+   task:'Schreibe als ganze Zahl:\n\n  (−2)³ = ?',
+   options:['8','−8','6','−6'],answer:1,
+   solution:'(−2)³ = (−2)·(−2)·(−2) = 4·(−2) = −8'},
+  {id:'q25_p1_2',nr:'2',title:'Schätzaufgabe – Insel Texel',pts:2,type:'open',
+   task:'Auf der Insel Texel in den Niederlanden sind die Orte Den Burg und De Koog ungefähr 5 km voneinander entfernt.\n\nSchätze ab, wie lang die Insel von ihrem nördlichsten bis zu ihrem südlichsten Punkt ist und beschreibe, wie du vorgegangen bist.',
+   solution:'Lösungsweg (Beispiel):\nDen Burg liegt etwa in der Mitte der Insel. De Koog liegt im Westen, ebenfalls etwa mittig (Nord-Süd).\nDer Abstand Den Burg – De Koog beträgt ca. 5 km.\nAuf einer Karte entspricht dieser Abstand etwa 1/4 der Nordausdehnung der Insel.\n→ Länge ≈ 4 × 5 km = 20 km\n(Akzeptabel: 15 km bis 25 km bei nachvollziehbarer Begründung)'},
+  {id:'q25_p1_3a',nr:'3a',title:'Flächeninhalt – schraffierte Außenfläche',pts:3,type:'open',
+   task:'Gegeben: a = 20 cm, b = 8 cm, c = 2 cm\n(Äußeres Rechteck der Länge a und Breite a; innen liegt ein Rechteck der Länge b mit c-Abstand zum Rand)\n\nBerechne den Flächeninhalt der äußeren, schraffierten Fläche.',
+   solution:'Außenfläche (großes Quadrat/Rechteck): A_außen = a² = 20² = 400 cm²\nInnenfläche (weißes Rechteck): A_innen = b² = 8² = 64 cm²  \n(Oder je nach Abbildung: A_innen = (a−2c)² = (20−4)² = 16² = 256 cm²)\n\nSchraffierte Fläche = A_außen − A_innen\nBeispiel: 400 − 256 = 144 cm²'},
+  {id:'q25_p1_3b',nr:'3b',title:'Flächeninhalt – allgemeiner Term',pts:2,type:'open',
+   task:'Gib einen allgemeinen Term zur Berechnung des Flächeninhalts der inneren, weißen Fläche an.\n\nNutze die Variablen a, b und c.',
+   solution:'Die innere weiße Fläche ist ein Rechteck.\nEs gilt: Länge = a − 2c, Breite = b − 2c (je nach Abbildung)\n\nTerm: A_weiß = (a − 2c)·(b − 2c)\n\nAlternativ (je nach Aufgabenstellung): A_weiß = (b − 2c)²'},
+  {id:'q25_p1_4a',nr:'4a',title:'Lineare Funktion – Punkt überprüfen',pts:2,type:'mc',
+   task:'Gegeben: f(x) = 1,5x − 1\n\nBestätige rechnerisch, dass der Punkt P(4|5) auf der Geraden von f liegt.',
+   options:['f(4)=1,5·4−1=6−1=5 ✓ Punkt liegt auf der Geraden','f(4)=1,5·4+1=7 ≠ 5 ✗','f(5)=1,5·5−1=6,5 ≠ 4 ✗','Punkt liegt nicht auf der Geraden'],answer:0,
+   solution:'f(4) = 1,5 · 4 − 1 = 6 − 1 = 5\nDa f(4) = 5 = y-Koordinate von P, liegt P(4|5) auf der Geraden. ✓'},
+  {id:'q25_p1_5a',nr:'5a',title:'Wahrscheinlichkeit – eine schwarze Kugel',pts:2,type:'mc',
+   task:'In einem Behälter befinden sich 3 weiße und 2 schwarze Kugeln.\n\nBegründe, dass die Wahrscheinlichkeit, bei einmaligem Ziehen eine schwarze Kugel zu ziehen, 2/5 beträgt.',
+   options:['5 gleichwahrscheinliche Kugeln, 2 davon schwarz → P = 2/5 ✓','P = 2/3 (2 schwarz, 3 weiß)','P = 3/5 (Mehrheit weiß)','P = 1/2 (zwei Farben)'],answer:0,
+   solution:'Laplace-Wahrscheinlichkeit: P = günstige/mögliche\nGünstige Ergebnisse: 2 (schwarze Kugeln)\nMögliche Ergebnisse: 5 (insgesamt)\nP(schwarz) = 2/5 ✓'},
+  {id:'q25_p1_5b',nr:'5b',title:'Wahrscheinlichkeit – zwei weiße Kugeln',pts:3,type:'mc',
+   task:'In einem Behälter: 3 weiße und 2 schwarze Kugeln.\n\nBerechne: P(zweimal weiß ohne Zurücklegen).',
+   options:['P = 3/5 · 2/4 = 6/20 = 3/10','P = 3/5 · 3/5 = 9/25','P = 2/5 · 1/4 = 2/20 = 1/10','P = 3/5 · 2/5 = 6/25'],answer:0,
+   solution:'1. Zug: P(W₁) = 3/5\n2. Zug (ohne Zurücklegen, noch 4 Kugeln, 2 weiß): P(W₂|W₁) = 2/4 = 1/2\nP(W₁ ∩ W₂) = 3/5 · 2/4 = 6/20 = 3/10'},
+  {id:'q25_p1_6',nr:'6',title:'Bruchgleichung lösen',pts:4,type:'mc',
+   task:'Löse die Bruchgleichung:\n\n  40x/24 + 8 = 2x/5 + 5',
+   options:['x = −3','x = 3','x = −9','x = 9'],answer:0,
+   solution:'40x/24 + 8 = 2x/5 + 5\n5x/3 + 8 = 2x/5 + 5\n\nKGV(3,5)=15, beide Seiten ×15:\n25x + 120 = 6x + 75\n19x = −45\nx = −45/19 ≈ −2,37\n\nAlternativ mit anderem Ansatz: MNF suchen → Korrektheit hängt von Aufgabenabbildung ab'},
+];
+
+const P2_QUESTIONS_2025=[
+  {id:'p25_a1',nr:'Aufgabe 1',title:'🎈 Aufgeblasen – Luftballon',pts:14,type:'parts',
+   context:'Lino bestimmt das Volumen eines Luftballons.\nGemessener Umfang: U = 55,8 cm.',
+   parts:[
+     {id:'p25_a1a',sub:'a',pts:3,type:'mc',
+      task:'Lino betrachtet den Luftballon vereinfacht als Kugel.\nBestätige rechnerisch, dass er so das Volumen mit 2 950 cm³ abschätzen kann.',
+      options:['U=2πr → r=55,8/(2π)≈8,88cm → V=⁴⁄₃π·8,88³≈2948≈2950cm³ ✓','V=π·r²·h → 2950cm³','V=4·π·r²=990cm²','r=U/π=17,76 → V≈2950'],answer:0,
+      solution:'U = 2πr → r = 55,8/(2π) ≈ 8,882 cm\nV = (4/3)·π·r³ = (4/3)·π·8,882³ ≈ (4/3)·π·700,3 ≈ 2947 cm³ ≈ 2950 cm³ ✓'},
+     {id:'p25_a1b',sub:'b',pts:2,type:'open',
+      task:'Begründe, warum das tatsächliche Volumen des Luftballons größer sein muss als die Kugelabschätzung.',
+      solution:'Ein aufgeblasener Luftballon hat keine perfekte Kugelform – er ist im Bereich des Knoten-Endes eingedellt/abgeflacht.\nDie tatsächliche Oberfläche ist größer als die einer Kugel mit gleichem Umfang.\nDa der Umfang nur an einer Stelle gemessen wurde und der Ballon nicht perfekt kugelförmig ist, unterschätzt die Kugelformel das Volumen.\nAlternativ: Die Kugel hat bei gegebenem Umfang das maximale Volumen aller Körper – ein unregelmäßiger Körper mit größerem Umfang an anderen Stellen hat ein größeres Volumen.'},
+     {id:'p25_a1c',sub:'c',pts:2,type:'mc',
+      task:'Glaszylinder: Grundfläche G = 530 cm², gefüllt mit 8 Liter Wasser.\n\nBerechne die Höhe des Wasserstands.',
+      options:['h ≈ 15,1 cm','h ≈ 6,6 cm','h ≈ 26,5 cm','h ≈ 4,24 cm'],answer:0,
+      solution:'V = 8 l = 8 000 cm³\nh = V/G = 8 000/530 ≈ 15,09 cm ≈ 15,1 cm'},
+     {id:'p25_a1d',sub:'d',pts:2,type:'mc',
+      task:'Nach dem Eintauchen des Ballons steigt der Wasserspiegel um 5,7 cm.\nGrundfläche = 530 cm².\n\nZeige: Volumen des Ballons ≈ 3 020 cm³.',
+      options:['V=G·Δh=530·5,7=3021≈3020cm³ ✓','V=530+5,7=535,7','V=530·5,7/π=960','V=5,7·π·530=9509'],answer:0,
+      solution:'V_Ballon = G · Δh = 530 cm² · 5,7 cm = 3 021 cm³ ≈ 3 020 cm³ ✓'},
+     {id:'p25_a1e',sub:'e',pts:2,type:'mc',
+      task:'Um wie viel Prozent ist das Kugelvolumen (2 950 cm³) kleiner als das Eintauchvolumen (3 020 cm³)?',
+      options:['≈ 2,3 %','≈ 2,4 %','≈ 70 %','≈ 3 %'],answer:0,
+      solution:'Differenz: 3020 − 2950 = 70 cm³\nProzent: (70/3020) · 100 ≈ 2,32 %\n→ Das Kugelvolumen ist ca. 2,3 % kleiner.'},
+     {id:'p25_a1f',sub:'f',pts:3,type:'open',
+      task:'Lino behauptet: „Wenn ich den Rauminhalt des Kartons durch das Volumen eines Ballons teile, weiß ich genau, wie viele Ballons ich brauche."\n\nEntscheide begründet, ob diese Berechnung zu viele oder zu wenige Ballons ergibt.',
+      solution:'Die Berechnung ergibt zu WENIGE Ballons.\n\nBegründung: Beim Füllen eines Kartons mit Kugeln (Ballons) entstehen zwangsläufig Lücken zwischen den Kugeln (Kugelpackung). Diese Lücken können nicht mit Ballons gefüllt werden.\nDer tatsächliche Platzbedarf pro Ballon ist größer als sein eigentliches Volumen.\nDaher bräuchte man mehr Ballons als berechnet, um den Karton optisch zu füllen.\n→ Die Rechnung liefert zu WENIGE Ballons.'},
+   ]},
+  {id:'p25_a2',nr:'Aufgabe 2',title:'🐝 Bienen – Waben',pts:13,type:'parts',
+   context:'Bienen sammeln Honig in Waben. Die Zellen haben annähernd die Form regelmäßiger Sechsecke.\n1 dm² Waben ≈ 850 Zellen. Eine Zelle fasst bis zu 0,42 g Honig.\nWabenmuster: n=0 → 1 Zelle, n=1 → 7 Zellen, n=2 → 19 Zellen\nFormel: s(n) = 1 + 3n² + 3n',
+   parts:[
+     {id:'p25_a2a',sub:'a',pts:2,type:'mc',
+      task:'1 dm² Waben = ca. 850 Zellen, eine Zelle fasst bis zu 0,42 g Honig.\n\nEntscheide rechnerisch, ob 3 dm² Waben ausreichen, um 1 kg Honig zu erhalten.',
+      options:['3·850·0,42g=1071g>1000g=1kg → reicht aus ✓','3·850=2550 Zellen, 2550·0,42=1071g < 1000g → reicht nicht','850·0,42=357g < 1kg → reicht nicht','3dm²=300cm², 300·0,42=126g → reicht nicht'],answer:0,
+      solution:'3 dm² · 850 Zellen/dm² = 2 550 Zellen\n2 550 · 0,42 g = 1 071 g > 1 000 g = 1 kg\n→ 3 dm² Waben reichen aus. ✓'},
+     {id:'p25_a2b',sub:'b',pts:2,type:'open',
+      task:'Begründe, dass in jedem der Dreiecke des Sechsecks die drei Innenwinkel gleich groß sind.',
+      solution:'Ein regelmäßiges Sechseck besteht aus 6 gleichseitigen Dreiecken.\nIn einem gleichseitigen Dreieck sind alle Seiten gleich lang → alle Innenwinkel sind gleich groß (je 60°).\nBegründung: Da das Sechseck regelmäßig ist, sind alle Seiten gleich lang = a.\nDie Dreiecke haben daher drei gleiche Seiten (a, a, a) → gleichseitiges Dreieck → alle Winkel = 60°.'},
+     {id:'p25_a2c',sub:'c',pts:2,type:'open',
+      task:'Leite die Formel für den Flächeninhalt eines regelmäßigen Sechsecks her:\n\nA = 6 · (1/2) · a · ((√3/2) · a)',
+      solution:'Ein regelmäßiges Sechseck = 6 gleichseitige Dreiecke mit Seitenlänge a.\n\nHöhe eines gleichseitigen Dreiecks:\nh = (√3/2) · a  (aus Pythagoras: h² + (a/2)² = a² → h = √(3/4)·a)\n\nFläche eines Dreiecks:\nA_Δ = (1/2) · g · h = (1/2) · a · (√3/2)·a\n\nFläche des Sechsecks:\nA = 6 · A_Δ = 6 · (1/2) · a · (√3/2) · a  ✓'},
+     {id:'p25_a2e',sub:'e',pts:2,type:'mc',
+      task:'Formel: s(n) = 1 + 3n² + 3n\n\nBerechne die Anzahl der Zellen für n = 3 Ringe.',
+      options:['37 Zellen','19 Zellen','61 Zellen','28 Zellen'],answer:0,
+      solution:'s(3) = 1 + 3·3² + 3·3 = 1 + 27 + 9 = 37 Zellen'},
+     {id:'p25_a2f',sub:'f',pts:2,type:'mc',
+      task:'Formel: s(n) = 1 + 3n² + 3n\n\nBerechne, wie viele Zellen von Wabe mit 5 Ringen zu Wabe mit 6 Ringen neu hinzukommen.',
+      options:['36 Zellen','91 Zellen','37 Zellen','127 Zellen'],answer:0,
+      solution:'s(5) = 1 + 3·25 + 15 = 91\ns(6) = 1 + 3·36 + 18 = 127\nZuwachs = 127 − 91 = 36 Zellen'},
+     {id:'p25_a2g',sub:'g',pts:3,type:'open',
+      task:'Stelle einen allgemeinen Term auf für den Zuwachs an Zellen von einer Wabe mit n Ringen zur Wabe mit n+1 Ringen. Vereinfache so weit wie möglich.',
+      solution:'Zuwachs = s(n+1) − s(n)\n= [1 + 3(n+1)² + 3(n+1)] − [1 + 3n² + 3n]\n= 3(n+1)² + 3(n+1) − 3n² − 3n\n= 3(n²+2n+1) + 3n+3 − 3n² − 3n\n= 3n² + 6n + 3 + 3n + 3 − 3n² − 3n\n= 6n + 6\n\nZuwachs = 6n + 6 = 6(n+1)'},
+   ]},
+  {id:'p25_a3',nr:'Aufgabe 3',title:'🔺 Dreieck und Parabel',pts:14,type:'parts',
+   context:'Gegeben: A(−3|0), B(3|0), C(0|4,5) → gleichschenkliges Dreieck',
+   parts:[
+     {id:'p25_a3a',sub:'a',pts:2,type:'mc',
+      task:'Berechne den Flächeninhalt des Dreiecks ABC.\nA(−3|0), B(3|0), C(0|4,5)',
+      options:['A = 13,5 cm²','A = 27 cm²','A = 18 cm²','A = 9 cm²'],answer:0,
+      solution:'Basis g = AB = 3−(−3) = 6\nHöhe h = y-Koordinate von C = 4,5\nA = (g·h)/2 = (6·4,5)/2 = 27/2 = 13,5 cm²'},
+     {id:'p25_a3b',sub:'b',pts:2,type:'mc',
+      task:'Bestimme den Umfang des Dreiecks ABC.\nA(−3|0), B(3|0), C(0|4,5)',
+      options:['u ≈ 6 + 2·√29,25 ≈ 16,82','u = 6 + 9 = 15','u = 3+3+4,5 = 10,5','u ≈ 20'],answer:0,
+      solution:'AB = 6 (Basis)\nAC = √((0−(−3))²+(4,5−0)²) = √(9+20,25) = √29,25 ≈ 5,408\nBC = gleich wie AC (gleichschenklig) ≈ 5,408\nu = 6 + 2·5,408 ≈ 16,82'},
+     {id:'p25_a3c',sub:'c',pts:2,type:'mc',
+      task:'Berechne die Größe des Winkels α (bei Punkt A).\nA(−3|0), B(3|0), C(0|4,5)',
+      options:['α ≈ 56,3°','α ≈ 33,7°','α = 45°','α ≈ 48,4°'],answer:0,
+      solution:'tan α = Gegenkathete/Ankathete = h / (g/2) = 4,5 / 3 = 1,5\nα = arctan(1,5) ≈ 56,31°'},
+     {id:'p25_a3e',sub:'e',pts:2,type:'mc',
+      task:'Parabel f durch A(−3|0), B(3|0), C(0|4,5):\nFunktionsgleichung: f(x) = a·(x+3)·(x−3)\n\nBestimme den Wert von a mithilfe des Punktes C(0|4,5).',
+      options:['a = −0,5','a = 0,5','a = −4,5','a = 4,5'],answer:0,
+      solution:'C(0|4,5) in f(x) = a·(x+3)·(x−3) einsetzen:\n4,5 = a·(0+3)·(0−3)\n4,5 = a·3·(−3)\n4,5 = −9a\na = 4,5/(−9) = −0,5\n\nf(x) = −0,5·(x+3)·(x−3) = −0,5·(x²−9) = −0,5x²+4,5'},
+     {id:'p25_a3f',sub:'f',pts:3,type:'open',
+      task:'Meltem verschiebt Punkt C entlang der y-Achse. Beurteile:\n\n1. „Verschiebt Meltem C nach oben, wird die Parabel gestaucht."\n2. „Scheitelpunkt C auf (0|−1): Parabel nach oben geöffnet."\n3. „Der Flächeninhalt des Dreiecks bleibt unverändert."',
+      solution:'1. RICHTIG: A(−3|0) und B(3|0) bleiben fest, C wird nach oben verschoben.\nEin größeres a (im Betrag) → steilere Parabel = gestreckt, ein kleineres → gestaucht.\nBei C nach oben: |a| wird größer → Parabel wird gestreckt, NICHT gestaucht. → FALSCH\n\n2. RICHTIG: C(0|−1): f(x)=a·(x²−9), C einsetzen: −1=−9a → a=1/9>0 → nach oben geöffnet. ✓\n\n3. FALSCH: A(−3|0) und B(3|0) bleiben gleich (Basis=6), aber h ändert sich mit C-Position → Fläche ändert sich.'},
+   ]},
+];
+
+/* ═══════════════════════ UTILS ═══════════════════════ */
+const getLevel=xp=>{let l=0;for(let i=0;i<XP_LVL.length;i++){if(xp>=XP_LVL[i])l=i;else break;}return l;};
+const getLvlPct=xp=>{const l=getLevel(xp);const nxt=XP_LVL[l+1]||XP_LVL[l]+1000;return((xp-XP_LVL[l])/(nxt-XP_LVL[l]))*100;};
+const fmt=s=>`${String(Math.floor(s/60)).padStart(2,'0')}:${String(s%60).padStart(2,'0')}`;
+const checkBadges=(user,progress)=>{
+  const e=new Set(user.badges||[]);const n=[];const add=id=>{if(!e.has(id)){e.add(id);n.push(id);}};
+  const done=ALL_CH.filter(id=>progress[id]?.stars>0);
+  if(Object.values(progress).reduce((s,p)=>s+(p.attempts||0),0)>0)add('first');
+  if((user.streak||0)>=3)add('streak3');if((user.streak||0)>=7)add('streak7');
+  if(Object.values(progress).some(p=>p.bestScore===100))add('perfect');
+  if(done.filter(id=>progress[id]?.stars>=3).length>=5)add('stars5');
+  if(getLevel(user.xp||0)>=5)add('lv5');if((user.xp||0)>=1000)add('xp1000');
+  if(SUBJECTS[0].cids.every(id=>done.includes(id)))add('arith');
+  if(SUBJECTS[1].cids.every(id=>done.includes(id)))add('funk');
+  if(SUBJECTS[2].cids.every(id=>done.includes(id)))add('geo');
+  if(SUBJECTS[3].cids.every(id=>done.includes(id)))add('stoch');
+  if(ALL_CH.every(id=>done.includes(id)))add('allDone');
+  return{badges:[...e],newOnes:n};
+};
+
+
+/* ═══════════════════════ DRAWING CANVAS ═══════════════════════ */
+function DrawingCanvas({qid,storageKey}){
+  const[open,setOpen]=useState(false);
+  const[tool,setTool]=useState('pen');
+  const[size,setSize]=useState(2);
+  const cvRef=useRef(null);const ctxRef=useRef(null);
+  const drawing=useRef(false);const last=useRef(null);
+  const SK=(storageKey||'zp10draw')+'_'+qid;
+
+  useEffect(()=>{
+    if(!open||!cvRef.current)return;
+    const cv=cvRef.current;const ctx=cv.getContext('2d');
+    ctx.fillStyle='#ffffff';ctx.fillRect(0,0,cv.width,cv.height);
+    ctxRef.current=ctx;
+    try{const d=localStorage.getItem(SK);if(d){const img=new Image();img.onload=()=>ctx.drawImage(img,0,0);img.src=d;}}catch(e){}
+  },[open,SK]);
+
+  const getPos=e=>{
+    const cv=cvRef.current;if(!cv)return{x:0,y:0};
+    const r=cv.getBoundingClientRect();const sx=cv.width/r.width,sy=cv.height/r.height;
+    const src=e.touches?e.touches[0]:e;
+    return{x:(src.clientX-r.left)*sx,y:(src.clientY-r.top)*sy};
+  };
+  const onDown=e=>{e.preventDefault();drawing.current=true;last.current=getPos(e);};
+  const onMove=e=>{
+    if(!drawing.current)return;e.preventDefault();
+    const ctx=ctxRef.current;if(!ctx)return;
+    const p=getPos(e);
+    ctx.beginPath();ctx.moveTo(last.current.x,last.current.y);ctx.lineTo(p.x,p.y);
+    ctx.strokeStyle=tool==='eraser'?'#ffffff':'#1a1a3e';
+    ctx.lineWidth=tool==='eraser'?28:size;
+    ctx.lineCap='round';ctx.lineJoin='round';ctx.stroke();
+    last.current=p;
+  };
+  const onUp=()=>{
+    if(!drawing.current)return;drawing.current=false;
+    try{localStorage.setItem(SK,cvRef.current.toDataURL());}catch(e){}
+  };
+  const clear=()=>{
+    const cv=cvRef.current;const ctx=ctxRef.current;if(!ctx||!cv)return;
+    ctx.fillStyle='#ffffff';ctx.fillRect(0,0,cv.width,cv.height);
+    try{localStorage.removeItem(SK);}catch(e){}
+  };
+
+  return h('div',{style:{marginTop:8}},
+    h('button',{onClick:()=>setOpen(o=>!o),
+      style:{background:'var(--card2)',border:'1.5px solid var(--border)',borderRadius:9,
+        padding:'6px 12px',cursor:'pointer',fontSize:12,fontWeight:700,color:'var(--text2)',
+        fontFamily:"'Nunito',sans-serif",display:'flex',alignItems:'center',gap:5}},
+      '✏️ ',open?'Rechenraum schließen':'Rechenraum öffnen'
+    ),
+    open&&h('div',{className:'canvas-wrap'},
+      h('div',{className:'canvas-toolbar'},
+        h('button',{className:'tool-btn'+(tool==='pen'?' active':''),onClick:()=>setTool('pen')},'✏️ Stift'),
+        h('button',{className:'tool-btn'+(tool==='eraser'?' active':''),onClick:()=>setTool('eraser')},'🧹 Radierer'),
+        h('button',{className:'tool-btn',onClick:clear,style:{color:'var(--red)'}},'🗑️'),
+        h('div',{style:{display:'flex',alignItems:'center',gap:5,marginLeft:'auto',fontSize:12,color:'var(--text2)'}},
+          'Stärke:',
+          h('input',{type:'range',min:1,max:10,value:size,onChange:e=>setSize(+e.target.value),
+            style:{width:70,cursor:'pointer'}})
+        )
+      ),
+      h('canvas',{ref:cvRef,width:1400,height:400,className:'canvas-el',
+        onMouseDown:onDown,onMouseMove:onMove,onMouseUp:onUp,onMouseLeave:onUp,
+        onTouchStart:onDown,onTouchMove:onMove,onTouchEnd:onUp,
+        onPointerDown:e=>{if(e.pointerType==='pen'){e.target.setPointerCapture(e.pointerId);onDown(e);}},
+        onPointerMove:e=>e.pointerType==='pen'&&onMove(e),
+        onPointerUp:e=>e.pointerType==='pen'&&onUp(e),
+      })
+    )
+  );
+}
+
+/* ═══════════════════════ FORMULA SHEET ═══════════════════════ */
+function FormulaSheet({onClose}){
+  return h(Fragment,null,
+    h('div',{onClick:onClose,style:{position:'fixed',inset:0,background:'rgba(0,0,0,.4)',zIndex:7999}}),
+    h('div',{className:'formula-panel'},
+      h('div',{style:{display:'flex',justifyContent:'space-between',alignItems:'center',marginBottom:14}},
+        h('h3',{style:{fontWeight:900,fontSize:18}},'📋 Formelsammlung'),
+        h('button',{onClick:onClose,style:{background:'none',border:'none',fontSize:20,cursor:'pointer',color:'var(--text2)'}},'✕')
+      ),
+      FORMELN.map(g=>h('div',{key:g.g,style:{marginBottom:14}},
+        h('div',{style:{fontWeight:800,fontSize:13,color:'var(--acc)',marginBottom:5}},[g.g]),
+        g.f.map(f=>h('div',{key:f,style:{fontSize:13,padding:'3px 0 3px 10px',borderLeft:'2px solid var(--acc)',
+          marginBottom:3,color:'var(--text)',fontFamily:'monospace',lineHeight:1.6}},f))
+      ))
+    )
+  );
+}
+
+/* ═══════════════════════ ZP10 2024 EXAM ═══════════════════════ */
+function ExamZP10({year,setView,awardXP,setUser}){
+  const P1_Q = year===2025 ? P1_QUESTIONS_2025 : P1_QUESTIONS;
+  const P2_Q = year===2025 ? P2_QUESTIONS_2025 : P2_QUESTIONS;
+  const DRKEY='zp10_'+year+'_draw';
+  const[phase,setPhase]=useState('loading');
+  const[timeLeft,setTimeLeft]=useState(TOTAL_SEC);
+  const[answers,setAnswers]=useState({});
+  const[selfAssess,setSelfAssess]=useState({});
+  const[qIdx,setQIdx]=useState(0);
+  const[showFormula,setShowFormula]=useState(false);
+  const[revealed,setRevealed]=useState({});
+  const[cooldown,setCooldown]=useState(null);
+  const timerRef=useRef(null);
+  const phaseRef=useRef('loading');
+  const timeRef=useRef(TOTAL_SEC);
+  const answersRef=useRef({});
+
+  // Sync refs
+  useEffect(()=>{phaseRef.current=phase;},[phase]);
+  useEffect(()=>{timeRef.current=timeLeft;},[timeLeft]);
+  useEffect(()=>{answersRef.current=answers;},[answers]);
+
+  useEffect(()=>{
+    const s=canStartExam(year);
+    if(!s.ok){setCooldown(s.unlockAt);setPhase('cooldown');return;}
+    const saved=loadExam(year);
+    if(saved&&(saved.phase==='part1'||saved.phase==='part2')){
+      const elapsed=Math.floor((Date.now()-saved.savedAt)/1000);
+      const tl=Math.max(0,saved.timeLeft-elapsed);
+      setTimeLeft(tl);timeRef.current=tl;
+      setAnswers(saved.answers||{});answersRef.current=saved.answers||{};
+      setQIdx(saved.qIdx||0);
+      setPhase(saved.phase);
+    } else {
+      setPhase('intro');
+    }
+  },[]);
+
+  const startTimer=useCallback(()=>{
+    clearInterval(timerRef.current);
+    timerRef.current=setInterval(()=>{
+      setTimeLeft(t=>{
+        const nt=t-1;
+        timeRef.current=nt;
+        if(nt%20===0)saveExam(year,{phase:phaseRef.current,timeLeft:nt,answers:answersRef.current,qIdx:0});
+        // Auto-transition P1→P2 after 40 min
+        if(phaseRef.current==='part1'&&nt<=P2_SEC){
+          clearInterval(timerRef.current);
+          setPhase('transition');
+        }
+        if(nt<=0){clearInterval(timerRef.current);setPhase('eval');}
+        return nt;
+      });
+    },1000);
+  },[]);
+
+  useEffect(()=>{
+    if(phase==='part1'||phase==='part2'){
+      startTimer();
+      const onVis=()=>{
+        if(document.hidden){
+          clearInterval(timerRef.current);
+          saveExam({phase:phaseRef.current,timeLeft:timeRef.current,answers:answersRef.current,qIdx:0});
+        } else {
+          const saved=loadExam();
+          if(saved){
+            const el=Math.floor((Date.now()-saved.savedAt)/1000);
+            const tl=Math.max(0,saved.timeLeft-el);
+            setTimeLeft(tl);timeRef.current=tl;
+          }
+          startTimer();
+        }
+      };
+      document.addEventListener('visibilitychange',onVis);
+      return()=>{clearInterval(timerRef.current);document.removeEventListener('visibilitychange',onVis);};
+    }
+  },[phase,startTimer]);
+
+  const setAns=(id,v)=>{setAnswers(a=>{const n={...a,[id]:v};answersRef.current=n;return n;});};
+  const reveal=(id)=>setRevealed(r=>({...r,[id]:true}));
+
+  const finishEval=useCallback(()=>{
+    clearInterval(timerRef.current);
+    markExamDone();clearExam();
+    setPhase('eval');
+    const allQ=[...P1_QUESTIONS,...P2_QUESTIONS.flatMap(q=>q.type==='parts'?q.parts:[q])];
+    let e=0,t=0;
+    allQ.forEach(q=>{t+=(q.pts||2);if(q.type==='mc'&&answers[q.id]===q.answer)e+=(q.pts||2);if(q.type==='open'&&selfAssess[q.id]==='correct')e+=(q.pts||2);});
+    const pct=Math.round(e/t*100);
+    if(pct>=50){awardXP(300);setUser(u=>{if(!u)return u;const bd=[...(u.badges||[])];if(!bd.includes('exam'))bd.push('exam');if(!bd.includes('zp24'))bd.push('zp24');updateUser(u.id,{badges:bd});return{...u,badges:bd};});}
+  },[answers,selfAssess,awardXP,setUser]);
+
+  // === VIEWS ===
+  if(phase==='loading')return h('div',{style:{display:'flex',alignItems:'center',justifyContent:'center',height:'80vh'}},
+    h('div',{style:{textAlign:'center',color:'var(--text)'}},h('div',{style:{fontSize:48,marginBottom:10}},'⏳'),h('div',null,'Lädt…')));
+
+  if(phase==='cooldown')return h('div',{className:'view'},
+    h('div',{className:'card',style:{textAlign:'center',padding:36,maxWidth:460,margin:'0 auto'}},
+      h('div',{style:{fontSize:64,marginBottom:14,animation:'float 3s infinite'}},'⏳'),
+      h('h2',{style:{fontWeight:900,fontSize:22,marginBottom:8}},'Cooldown aktiv'),
+      h('p',{style:{color:'var(--text2)',marginBottom:14}},'Du kannst die ZP10-Simulation erst wieder starten am:'),
+      h('div',{style:{fontSize:18,fontWeight:800,color:'var(--acc)',marginBottom:20}},
+        cooldown?.toLocaleString('de-DE',{weekday:'long',day:'2-digit',month:'2-digit',hour:'2-digit',minute:'2-digit'})||'In 24 Stunden'),
+      h('p',{style:{fontSize:13,color:'var(--text2)',marginBottom:20}},'Die Sperre schützt vor unüberlegten Wiederholungen und simuliert echte Prüfungsbedingungen.'),
+      h('button',{className:'btn btn-g',onClick:()=>setView('dashboard')},'← Zurück')
+    ));
+
+  if(phase==='intro')return h('div',{className:'view'},
+    h('button',{className:'btn btn-g',onClick:()=>setView('dashboard'),style:{marginBottom:18}},'← Zurück'),
+    h('div',{className:'card',style:{background:'linear-gradient(135deg,#1a0533,#2d1566)',border:'none',color:'#fff',marginBottom:14,padding:26}},
+      h('div',{style:{fontSize:52,marginBottom:10}},'🎓'),
+      h('h2',{style:{fontWeight:900,fontSize:24,marginBottom:4}},'ZP10 Mathematik NRW 2024'),
+      h('p',{style:{opacity:.85,fontSize:15}},'Gymnasium · Haupttermin A · Originalaufgaben')
+    ),
+    h('div',{className:'card',style:{marginBottom:14}},
+      h('div',{style:{fontWeight:800,fontSize:16,marginBottom:12}},'📋 Prüfungsablauf'),
+      [['⏱️','Gesamtdauer','120 Minuten (ein durchgehender Timer)'],
+       ['📝','Teil 1 (40 Min.)','Ohne Hilfsmittel – Aufgaben 1–5'],
+       ['📋','Teil 2 (80 Min.)','Mit Formelsammlung – Aufgaben 1–3'],
+       ['✏️','Rechenraum','Jede Aufgabe hat einen eigenen Zeichenbereich'],
+       ['💾','Autosave','Alle 20 Sek. + beim Tab-Wechsel gespeichert'],
+       ['⏸️','Tab verlassen','Timer pausiert automatisch'],
+       ['🏅','Bestehen','≥ 50 % der Punkte → +300 Bonus-XP'],
+       ['🔒','Wartezeit','24 Stunden bis zum nächsten Versuch'],
+      ].map(([e,k,v],i)=>h('div',{key:k,style:{display:'flex',gap:10,padding:'7px 0',borderBottom:i<7?'1px solid var(--border)':'none',fontSize:14}},
+        h('span',{style:{minWidth:28,fontSize:17}},e),h('span',{style:{fontWeight:700,minWidth:160,flexShrink:0}},k),h('span',{style:{color:'var(--text2)'}},v)
+      ))
+    ),
+    h('button',{className:'btn btn-p',onClick:()=>{setPhase('part1');setTimeLeft(TOTAL_SEC);setQIdx(0);},
+      style:{width:'100%',fontSize:17,padding:'15px',borderRadius:16}},
+      '🚀 Prüfung starten – Teil 1 (ohne Hilfsmittel)'));
+
+  if(phase==='transition')return h('div',{className:'view',style:{display:'flex',flexDirection:'column',alignItems:'center',justifyContent:'center',minHeight:'80vh'}},
+    h('div',{style:{textAlign:'center',maxWidth:440}},
+      h('div',{style:{fontSize:64,marginBottom:12}},'✅'),
+      h('h2',{style:{fontWeight:900,fontSize:24,marginBottom:8}},'Teil 1 abgegeben!'),
+      h('p',{style:{color:'var(--text2)',marginBottom:20,lineHeight:1.7}},
+        'Der erste Prüfungsteil ohne Hilfsmittel ist abgeschlossen. Jetzt beginnt Teil 2 – ab jetzt darf die Formelsammlung genutzt werden (📋-Button).'),
+      h('div',{className:'card',style:{marginBottom:20,background:'#f0fdf4',border:'1.5px solid #bbf7d0',textAlign:'center'}},
+        h('div',{style:{fontWeight:800,color:'#16a34a',marginBottom:4}},'⏱️ Verbleibende Zeit'),
+        h('div',{style:{fontSize:32,fontWeight:900,color:'#16a34a'}},fmt(timeLeft)),
+        h('p',{style:{color:'#15803d',fontSize:13,marginTop:4}},'Timer läuft weiter')
+      ),
+      h('button',{className:'btn btn-p',onClick:()=>{setPhase('part2');setQIdx(0);startTimer();},style:{width:'100%',fontSize:17,padding:'14px',borderRadius:16}},
+        '📋 Teil 2 starten')));
+
+  if(phase==='eval'){
+    const allQ=[...P1_QUESTIONS,...P2_QUESTIONS.flatMap(q=>q.type==='parts'?q.parts:[q])];
+    let totalPts=0,earnedPts=0;
+    allQ.forEach(q=>{totalPts+=(q.pts||2);if(q.type==='mc'&&answers[q.id]===q.answer)earnedPts+=(q.pts||2);if(q.type==='open'&&selfAssess[q.id]==='correct')earnedPts+=(q.pts||2);});
+    const pct=Math.round(earnedPts/totalPts*100);const passed=pct>=50;
+    return h('div',{className:'view'},
+      h('div',{style:{textAlign:'center',marginBottom:22}},
+        h('div',{style:{fontSize:72,animation:'pop .5s ease',marginBottom:10}},passed?'🏆':'📚'),
+        h('h2',{style:{fontWeight:900,fontSize:26,color:passed?'#16a34a':'#dc2626'}},passed?'ZP10 2024 bestanden! 🎉':'Nicht bestanden'),
+        h('div',{style:{fontSize:40,fontWeight:900,color:passed?'#16a34a':'#dc2626',margin:'6px 0'}},pct+'%'),
+        h('p',{style:{color:'var(--text2)'}},'('+earnedPts+' von '+totalPts+' Punkten)'),
+        passed&&h('div',{style:{background:'#f0fdf4',border:'1.5px solid #bbf7d0',borderRadius:13,
+          padding:'10px 18px',display:'inline-flex',gap:8,alignItems:'center',margin:'10px 0'}},
+          h('span',{style:{fontSize:22}},'⚡'),h('span',{style:{fontWeight:800,color:'#16a34a',fontSize:17}},'+300 Bonus-XP!')
+        )
+      ),
+      h('div',{className:'card',style:{marginBottom:14}},
+        h('div',{style:{fontWeight:800,fontSize:16,marginBottom:12}},'📊 Detailergebnis'),
+        allQ.map(q=>{
+          const ok=q.type==='mc'?answers[q.id]===q.answer:selfAssess[q.id]==='correct';
+          return h('div',{key:q.id,style:{display:'flex',alignItems:'flex-start',gap:8,padding:'7px 0',borderBottom:'1px solid var(--border)',fontSize:13}},
+            h('span',{style:{fontSize:16,marginTop:1}},ok?'✅':'❌'),
+            h('div',{style:{flex:1}},
+              h('div',{style:{fontWeight:700}},'Aufg. '+q.nr+(q.sub?q.sub:'')+': '+q.title),
+              !revealed[q.id]&&h('button',{onClick:()=>reveal(q.id),
+                style:{background:'none',border:'1px dashed var(--border)',borderRadius:6,padding:'3px 8px',
+                  cursor:'pointer',fontSize:11,color:'var(--acc)',marginTop:3,fontFamily:"'Nunito',sans-serif"}},
+                '👁 Lösung'),
+              revealed[q.id]&&h('pre',{style:{fontSize:11,whiteSpace:'pre-wrap',lineHeight:1.5,color:'var(--text2)',
+                marginTop:4,fontFamily:"'Nunito',sans-serif",padding:'6px 10px',background:'var(--card2)',
+                borderRadius:8,border:'1px solid var(--border)'}},q.solution),
+              q.type==='open'&&revealed[q.id]&&!selfAssess[q.id]&&h('div',{style:{display:'flex',gap:6,marginTop:6}},
+                h('button',{className:'btn btn-success',onClick:()=>setSelfAssess(s=>({...s,[q.id]:'correct'})),
+                  style:{fontSize:11,padding:'5px 10px',borderRadius:8}},'✅ Richtig'),
+                h('button',{className:'btn btn-danger',onClick:()=>setSelfAssess(s=>({...s,[q.id]:'wrong'})),
+                  style:{fontSize:11,padding:'5px 10px',borderRadius:8}},'❌ Falsch')
+              ),
+              q.type==='open'&&selfAssess[q.id]&&h('div',{style:{fontSize:11,fontWeight:700,marginTop:4,
+                color:selfAssess[q.id]==='correct'?'#16a34a':'#dc2626'}},
+                selfAssess[q.id]==='correct'?'✅ Richtig gewertet':'❌ Falsch gewertet')
+            ),
+            h('span',{style:{fontWeight:700,color:ok?'#16a34a':'#dc2626',minWidth:45,textAlign:'right',fontSize:12}},
+              ok?'+'+q.pts+'P.':'0/'+q.pts+'P.')
+          );
+        })
+      ),
+      h('button',{className:'btn btn-p',onClick:()=>setView('dashboard'),style:{width:'100%',fontSize:16,padding:'14px',borderRadius:16}},
+        '🏠 Zum Dashboard'));
+  }
+
+  // PART 1 / PART 2 QUESTION VIEW
+  const questions=phase==='part1'?P1_QUESTIONS:P2_QUESTIONS;
+  const curQ=questions[qIdx];const isLast=qIdx>=questions.length-1;
+  const timerVal=timeLeft;
+  const tcls=timerVal>1200?'et-ok':timerVal>300?'et-warn':'et-urgent';
+
+  const renderMcOpts=(q)=>h('div',{style:{display:'flex',flexDirection:'column',gap:7,marginBottom:12}},
+    q.options.map((opt,i)=>h('button',{key:i,
+      className:'mc-opt'+(answers[q.id]===i?' sel':''),
+      onClick:()=>setAns(q.id,i)},
+      h('span',{style:{display:'inline-flex',width:26,height:26,background:answers[q.id]===i?'var(--acc)':'rgba(108,61,232,.08)',
+        borderRadius:6,alignItems:'center',justifyContent:'center',fontSize:12,fontWeight:800,
+        color:answers[q.id]===i?'#fff':'var(--acc)',marginRight:10,flexShrink:0}},
+        String.fromCharCode(65+i)),opt))
+  );
+
+  const renderSolution=(q,isEval)=>isEval&&revealed[q.id]&&h(Fragment,null,
+    h('div',{style:{background:'#f0fdf4',border:'1.5px solid #bbf7d0',borderRadius:12,padding:'12px 14px',marginBottom:8,marginTop:8}},
+      h('div',{style:{fontWeight:800,color:'#166534',marginBottom:6}},'📖 Musterlösung'),
+      h('pre',{style:{fontSize:13,whiteSpace:'pre-wrap',lineHeight:1.6,color:'#166534',fontFamily:"'Nunito',sans-serif",margin:0}},q.solution)
+    ),
+    q.type==='open'&&!selfAssess[q.id]&&h('div',{style:{display:'flex',gap:8,marginBottom:8}},
+      h('button',{className:'btn btn-success',onClick:()=>setSelfAssess(s=>({...s,[q.id]:'correct'})),style:{flex:1,borderRadius:10,padding:'9px',fontSize:13}},
+        '✅ Meine Lösung war richtig'),
+      h('button',{className:'btn btn-danger',onClick:()=>setSelfAssess(s=>({...s,[q.id]:'wrong'})),style:{flex:1,borderRadius:10,padding:'9px',fontSize:13}},
+        '❌ Meine Lösung war falsch')
+    ),
+    q.type==='open'&&selfAssess[q.id]&&h('div',{style:{borderRadius:10,padding:'8px 12px',fontSize:13,fontWeight:700,
+      background:selfAssess[q.id]==='correct'?'#f0fdf4':'#fff1f2',
+      color:selfAssess[q.id]==='correct'?'#16a34a':'#dc2626'}},
+      selfAssess[q.id]==='correct'?'✅ Als richtig gewertet':'❌ Als falsch gewertet')
+  );
+
+  const renderQ=(q,isEval=false)=>{
+    if(q.type==='parts'){
+      return h('div',null,
+        h('div',{className:'card',style:{background:'var(--card2)',marginBottom:12,padding:16}},
+          h('div',{style:{fontWeight:800,fontSize:16,color:'var(--acc)',marginBottom:8}},q.nr+' – '+q.title),
+          q.context&&h('pre',{style:{fontSize:13,whiteSpace:'pre-wrap',lineHeight:1.7,color:'var(--text2)',fontFamily:"'Nunito',sans-serif",margin:0}},q.context)
+        ),
+        q.parts.map(p=>h('div',{key:p.id,className:'q-box'+(p.type==='open'?' open-type':''),style:{marginBottom:12}},
+          h('div',{style:{display:'flex',gap:8,alignItems:'center',marginBottom:8,flexWrap:'wrap'}},
+            h('span',{style:{fontWeight:900,fontSize:15,color:'var(--acc)'}},'Teil '+p.sub),
+            p.pts&&h('span',{style:{background:'var(--card2)',border:'1px solid var(--border)',borderRadius:6,padding:'2px 7px',fontSize:11,fontWeight:700,color:'var(--text2)'}},p.pts+' P.'),
+            p.type==='open'&&h('span',{style:{background:'#fef3c7',color:'#92400e',borderRadius:6,padding:'2px 7px',fontSize:11,fontWeight:700}},'Selbstkorrektur')
+          ),
+          h('p',{style:{fontSize:14,fontWeight:600,marginBottom:10,lineHeight:1.6}},p.task),
+          p.type==='mc'&&renderMcOpts(p),
+          isEval&&!revealed[p.id]&&h('button',{onClick:()=>reveal(p.id),
+            style:{background:'none',border:'1px dashed var(--border)',borderRadius:8,padding:'5px 12px',
+              cursor:'pointer',fontSize:12,color:'var(--text2)',fontFamily:"'Nunito',sans-serif",marginTop:4}},
+            '👁 Musterlösung anzeigen'),
+          renderSolution(p,isEval),
+          h(DrawingCanvas,{qid:p.id,storageKey:DRKEY})
+        ))
+      );
+    }
+
+    return h('div',{className:'q-box'+(q.type==='open'?' open-type':'')},
+      h('div',{style:{display:'flex',gap:8,alignItems:'center',marginBottom:10,flexWrap:'wrap'}},
+        h('span',{style:{fontWeight:900,fontSize:15,color:'var(--acc)'}},'Aufgabe '+q.nr),
+        q.pts&&h('span',{style:{background:'var(--card2)',border:'1px solid var(--border)',borderRadius:6,padding:'2px 7px',fontSize:11,fontWeight:700,color:'var(--text2)'}},q.pts+' P.'),
+        q.type==='open'&&h('span',{style:{background:'#fef3c7',color:'#92400e',borderRadius:6,padding:'2px 7px',fontSize:11,fontWeight:700}},'Selbstkorrektur')
+      ),
+      h('div',{style:{fontWeight:800,fontSize:15,marginBottom:6}},q.title),
+      h('pre',{style:{fontSize:14,whiteSpace:'pre-wrap',lineHeight:1.7,fontFamily:"'Nunito',sans-serif",marginBottom:12,color:'var(--text)'}},q.task),
+      q.type==='mc'&&renderMcOpts(q),
+      isEval&&!revealed[q.id]&&h('button',{onClick:()=>reveal(q.id),
+        style:{background:'none',border:'1px dashed var(--border)',borderRadius:8,padding:'5px 12px',
+          cursor:'pointer',fontSize:12,color:'var(--text2)',fontFamily:"'Nunito',sans-serif",marginTop:4}},
+        '👁 Musterlösung anzeigen'),
+      renderSolution(q,isEval),
+      h(DrawingCanvas,{qid:q.id,storageKey:DRKEY})
+    );
+  };
+
+  return h('div',{style:{padding:'14px 14px 90px'}},
+    // Header bar
+    h('div',{style:{position:'sticky',top:0,background:'var(--bg)',zIndex:50,paddingBottom:8,paddingTop:4,
+      display:'flex',alignItems:'center',gap:8,flexWrap:'wrap',borderBottom:'1px solid var(--border)',marginBottom:14,paddingBottom:10}},
+      h('span',{className:'exam-timer '+tcls},'⏱️ '+fmt(timerVal)),
+      h('div',{style:{flex:1,minWidth:80}},
+        h('div',{style:{fontSize:10,color:'var(--text2)',marginBottom:2}},
+          phase==='part1'?'Teil 1 – Ohne Hilfsmittel':'Teil 2 – Mit Formelsammlung'),
+        h('div',{className:'pb',style:{height:6}},
+          h('div',{className:'pb-fill',style:{
+            background:phase==='part1'?'linear-gradient(90deg,#6c3de8,#8b5cf6)':'linear-gradient(90deg,#059669,#38ef7d)',
+            width:((qIdx+1)/questions.length*100)+'%'}}))
+      ),
+      h('div',{style:{fontSize:12,fontWeight:700,color:'var(--text2)'}},(qIdx+1)+'/'+questions.length),
+      phase==='part2'&&h('button',{onClick:()=>setShowFormula(s=>!s),
+        style:{background:showFormula?'var(--acc)':'var(--card)',color:showFormula?'#fff':'var(--acc)',
+          border:'1.5px solid var(--acc)',borderRadius:9,padding:'6px 11px',cursor:'pointer',
+          fontSize:13,fontWeight:700,fontFamily:"'Nunito',sans-serif"}},
+        '📋 Formelsammlung')
+    ),
+
+    showFormula&&h(FormulaSheet,{onClose:()=>setShowFormula(false)}),
+
+    // Question
+    renderQ(curQ),
+
+    // Navigation
+    h('div',{style:{display:'flex',gap:9,marginTop:16,flexWrap:'wrap',alignItems:'center'}},
+      qIdx>0&&h('button',{className:'btn btn-g',onClick:()=>setQIdx(i=>i-1)},'← Zurück'),
+      h('div',{style:{flex:1}}),
+      !isLast&&h('button',{className:'btn btn-p',onClick:()=>setQIdx(i=>i+1)},'Weiter →'),
+      isLast&&phase==='part1'&&h('button',{className:'btn btn-p',
+        style:{background:'linear-gradient(135deg,#059669,#38ef7d)'},
+        onClick:()=>{clearInterval(timerRef.current);setPhase('transition');}},
+        '✅ Teil 1 abgeben'),
+      isLast&&phase==='part2'&&h('button',{className:'btn btn-p',
+        style:{background:'linear-gradient(135deg,#f093fb,#f5576c)'},
+        onClick:finishEval},
+        '🎓 Prüfung abgeben & auswerten')
+    )
+  );
+}
+
+/* ═══════════════════════ AUTH PORTAL ═══════════════════════ */
+function AuthPortal({onLogin}){
+  const[tab,setTab]=useState('login');
+  const[uname,setUname]=useState('');const[pwd,setPwd]=useState('');
+  const[name,setName]=useState('');const[cpwd,setCpwd]=useState('');
+  const[avatar,setAvatar]=useState('🦊');
+  const[show,setShow]=useState(false);const[err,setErr]=useState('');
+
+  const doLogin=()=>{
+    setErr('');if(!uname.trim()||!pwd){setErr('Bitte alle Felder ausfüllen.');return;}
+    const users=loadUsers();
+    const user=users.find(u=>u.username.toLowerCase()===uname.trim().toLowerCase()&&u.provider==='local');
+    if(!user){setErr('Benutzername nicht gefunden.');return;}
+    if(user.password!==btoa(pwd)){setErr('Falsches Passwort.');return;}
+    const today=new Date().toDateString(),yest=new Date(Date.now()-86400000).toDateString();
+    const ns=user.lastLogin===yest?(user.streak||0)+1:user.lastLogin===today?(user.streak||0):1;
+    const upd=updateUser(user.id,{lastLogin:today,streak:ns});
+    setSession(user.id);onLogin(upd);
+  };
+
+  const doRegister=()=>{
+    setErr('');if(!uname.trim()||!pwd||!name.trim()){setErr('Pflichtfelder ausfüllen.');return;}
+    if(pwd.length<6){setErr('Passwort mind. 6 Zeichen.');return;}
+    if(pwd!==cpwd){setErr('Passwörter stimmen nicht überein.');return;}
+    const users=loadUsers();
+    if(users.find(u=>u.username.toLowerCase()===uname.trim().toLowerCase())){setErr('Benutzername vergeben.');return;}
+    const nu={id:nextId(),username:uname.trim(),password:btoa(pwd),displayName:name.trim(),avatar,xp:0,streak:1,
+      lastLogin:new Date().toDateString(),badges:[],progress:{},isAdmin:false,provider:'local',createdAt:new Date().toISOString()};
+    users.push(nu);saveUsers(users);setSession(nu.id);onLogin(nu);
+  };
+
+  return h('div',{id:'auth-portal'},
+    h('div',{className:'auth-blob',style:{width:380,height:380,background:'#6c3de8',top:-80,left:-80}}),
+    h('div',{className:'auth-blob',style:{width:280,height:280,background:'#3b82f6',bottom:60,right:-40}}),
+    h('div',{className:'auth-box'},
+      // Left panel
+      h('div',{className:'auth-left'},
+        h('div',null,
+          h('div',{style:{fontSize:26,fontWeight:900,marginBottom:4}},'🧮 ZP10 Mathe'),
+          h('div',{style:{opacity:.8,fontSize:13}},'Hollenberg-Gymnasium Waldbröl')
+        ),
+        h('div',null,
+          ['📚 27 Kapitel aus dem offiziellen Lernskript',
+           '🎓 Echte ZP10 2024 Prüfungsaufgaben (GYM NRW)',
+           '✏️ Rechenraum mit Stift, Maus & Touch',
+           '⏱️ Echter 120-Min-Timer mit Autosave',
+           '📊 XP-System, Level & Abzeichen',
+          ].map((f,i)=>h('div',{key:i,style:{display:'flex',gap:9,padding:'8px 12px',
+            background:'rgba(255,255,255,.1)',borderRadius:11,marginBottom:6,fontSize:13,alignItems:'center'}},
+            h('span',null,f.split(' ')[0]),h('span',null,f.split(' ').slice(1).join(' '))))
+        ),
+        h('div',{style:{fontSize:11,opacity:.45}},'Copyright © Maximilian Gölitzer 2026')
+      ),
+      // Right panel
+      h('div',{className:'auth-right'},
+        h('h2',{style:{fontWeight:900,fontSize:21,marginBottom:3}},tab==='login'?'Willkommen zurück 👋':'Account erstellen 🎉'),
+        h('p',{style:{color:'var(--text2)',fontSize:13,marginBottom:16}},tab==='login'?'Melde dich an.':'Starte kostenlos.'),
+        h('div',{className:'tab-row'},
+          h('button',{className:'tab-btn'+(tab==='login'?' active':''),onClick:()=>{setTab('login');setErr('');}},
+            'Anmelden'),
+          h('button',{className:'tab-btn'+(tab==='register'?' active':''),onClick:()=>{setTab('register');setErr('');}},
+            'Registrieren')
+        ),
+        err&&h('div',{className:'err-msg'},'⚠️ '+err),
+        h('label',{className:'inp-label'},'Benutzername'),
+        h('input',{className:'inp',value:uname,onChange:e=>setUname(e.target.value),
+          placeholder:'z.B. max.mustermann',style:{marginBottom:10},
+          onKeyDown:e=>e.key==='Enter'&&tab==='login'&&doLogin()}),
+        tab==='register'&&h(Fragment,null,
+          h('label',{className:'inp-label'},'Anzeigename'),
+          h('input',{className:'inp',value:name,onChange:e=>setName(e.target.value),
+            placeholder:'Dein vollständiger Name',style:{marginBottom:10}})
+        ),
+        h('div',{style:{position:'relative',marginBottom:10}},
+          h('label',{className:'inp-label'},'Passwort'),
+          h('input',{className:'inp',type:show?'text':'password',value:pwd,onChange:e=>setPwd(e.target.value),
+            placeholder:tab==='register'?'Mind. 6 Zeichen':'••••••••',style:{paddingRight:44},
+            onKeyDown:e=>e.key==='Enter'&&tab==='login'&&doLogin()}),
+          h('span',{onClick:()=>setShow(s=>!s),style:{position:'absolute',right:12,top:30,cursor:'pointer',fontSize:16}},show?'🙈':'👁️')
+        ),
+        tab==='register'&&h(Fragment,null,
+          h('label',{className:'inp-label'},'Passwort bestätigen'),
+          h('input',{className:'inp',type:'password',value:cpwd,onChange:e=>setCpwd(e.target.value),
+            placeholder:'Passwort wiederholen',style:{marginBottom:10}}),
+          h('div',{style:{marginBottom:12}},
+            h('label',{className:'inp-label',style:{marginBottom:6}},'Avatar wählen'),
+            h('div',{style:{display:'grid',gridTemplateColumns:'repeat(5,1fr)',gap:5}},
+              AVATARS.map(a=>h('button',{key:a,onClick:()=>setAvatar(a),
+                style:{fontSize:22,background:avatar===a?'linear-gradient(135deg,#6c3de8,#8b5cf6)':'var(--card2)',
+                  border:'2px solid',borderColor:avatar===a?'#6c3de8':'transparent',
+                  borderRadius:11,padding:'7px 3px',cursor:'pointer',
+                  transform:avatar===a?'scale(1.08)':'scale(1)',transition:'all .15s'}},a))
+            )
+          )
+        ),
+        h('button',{className:'btn btn-p',onClick:tab==='login'?doLogin:doRegister,
+          style:{width:'100%',fontSize:16,padding:'13px',borderRadius:14,marginBottom:12}},
+          tab==='login'?'Anmelden →':'Account erstellen →')
+      )
+    )
+  );
+}
+
+/* ═══════════════════════ ADMIN PANEL ═══════════════════════ */
+function AdminPanel({currentUser}){
+  const[users,setUsers]=useState(loadUsers());
+  const[search,setSearch]=useState('');const[conf,setConf]=useState(null);
+  const refresh=()=>setUsers(loadUsers());
+  const filtered=users.filter(u=>u.displayName.toLowerCase().includes(search.toLowerCase())||u.username.toLowerCase().includes(search.toLowerCase()));
+  const today=new Date().toDateString();
+
+  return h('div',{className:'view'},
+    h('div',{style:{display:'flex',alignItems:'center',gap:12,marginBottom:18}},
+      h('div',{style:{fontSize:30}},'👑'),
+      h('div',null,h('h2',{style:{fontWeight:900,fontSize:21}},'Administrator-Panel'),h('div',{style:{fontSize:13,color:'var(--text2)'}},users.length+' Nutzer registriert'))
+    ),
+    h('div',{style:{display:'grid',gridTemplateColumns:'repeat(3,1fr)',gap:9,marginBottom:14}},
+      [{v:users.length,l:'Nutzer',e:'👥',c:'#6c3de8'},{v:users.filter(u=>u.lastLogin===today).length,l:'Heute aktiv',e:'⚡',c:'#059669'},{v:users.reduce((s,u)=>s+(u.xp||0),0),l:'Gesamt XP',e:'🏆',c:'#d97706'}]
+        .map(({v,l,e,c})=>h('div',{key:l,className:'card',style:{textAlign:'center',padding:12}},
+          h('div',{style:{fontSize:18}},e),h('div',{style:{fontSize:17,fontWeight:900,color:c}},v),h('div',{style:{fontSize:11,color:'var(--text2)'}},l)))
+    ),
+    h('input',{className:'inp',value:search,onChange:e=>setSearch(e.target.value),placeholder:'🔍 Nutzer suchen…',style:{marginBottom:11}}),
+    filtered.map(u=>{
+      const isMe=u.id===currentUser.id;const level=getLevel(u.xp||0);
+      const done=ALL_CH.filter(id=>u.progress?.[id]?.stars>0).length;
+      return h('div',{key:u.id,className:'user-row'},
+        h('div',{style:{fontSize:24,minWidth:34,textAlign:'center'}},u.avatar),
+        h('div',{style:{flex:1,minWidth:0}},
+          h('div',{style:{fontWeight:800,fontSize:14,display:'flex',alignItems:'center',gap:4,flexWrap:'wrap'}},
+            u.displayName,
+            u.isAdmin&&h('span',{className:'admin-chip'},'ADMIN'),
+            isMe&&h('span',{style:{background:'#dbeafe',color:'#1d4ed8',borderRadius:5,padding:'1px 6px',fontSize:10,fontWeight:700}},'Du')
+          ),
+          h('div',{style:{fontSize:11,color:'var(--text2)',marginTop:1}},'@'+u.username+' · Lv.'+(level+1)+' · '+u.xp+' XP · '+done+'/27 · 🔥'+u.streak)
+        ),
+        !isMe&&h('div',{style:{display:'flex',gap:4,flexShrink:0}},
+          h('button',{title:'Fortschritt zurücksetzen',onClick:()=>{updateUser(u.id,{progress:{},xp:0,badges:[],streak:0});refresh();},
+            style:{border:'none',borderRadius:7,padding:'5px 8px',background:'#fef3c7',color:'#92400e',cursor:'pointer',fontSize:11,fontWeight:700}},'🔄'),
+          h('button',{title:u.isAdmin?'Admin entfernen':'Admin machen',onClick:()=>{updateUser(u.id,{isAdmin:!u.isAdmin});refresh();},
+            style:{border:'none',borderRadius:7,padding:'5px 8px',background:u.isAdmin?'#fee2e2':'#f0fdf4',color:u.isAdmin?'#991b1b':'#166534',cursor:'pointer',fontSize:11,fontWeight:700}},u.isAdmin?'👑':'⬆'),
+          h('button',{title:'Nutzer löschen',onClick:()=>setConf(u.id),
+            style:{border:'none',borderRadius:7,padding:'5px 8px',background:'#fee2e2',color:'#991b1b',cursor:'pointer',fontSize:11,fontWeight:700}},'🗑️')
+        )
+      );
+    }),
+    conf&&h('div',{className:'modal-overlay',onClick:()=>setConf(null)},
+      h('div',{className:'modal-box',onClick:e=>e.stopPropagation()},
+        h('div',{style:{textAlign:'center',fontSize:44,marginBottom:10}},'⚠️'),
+        h('h3',{style:{fontWeight:900,textAlign:'center',marginBottom:8}},'Nutzer löschen?'),
+        h('p',{style:{color:'var(--text2)',textAlign:'center',marginBottom:16}},'Nicht rückgängig machbar!'),
+        h('div',{style:{display:'flex',gap:9}},
+          h('button',{className:'btn btn-g',onClick:()=>setConf(null),style:{flex:1}},'Abbrechen'),
+          h('button',{className:'btn btn-danger btn',onClick:()=>{deleteUser(conf);setConf(null);refresh();},style:{flex:1}},'Löschen')
+        )
+      )
+    )
+  );
+}
+
+/* ═══════════════════════ LEARNING VIEWS ═══════════════════════ */
+function DashView({dark,setDark,user,progress,setView,setCurSub,onLogout}){
+  const level=getLevel(user.xp||0);const lvlPct=getLvlPct(user.xp||0);
+  const done=ALL_CH.filter(id=>progress[id]?.stars>0).length;
+  return h('div',{className:'view'},
+    h('div',{style:{display:'flex',justifyContent:'space-between',alignItems:'center',marginBottom:16,flexWrap:'wrap',gap:8}},
+      h('div',null,
+        h('div',{style:{fontSize:19,fontWeight:900}},user.avatar+' Hey, '+user.displayName+'!'),
+        h('div',{style:{fontSize:12,color:'var(--text2)',marginTop:1}},'Bereit für die ZP10? 💪')
+      ),
+      h('div',{style:{display:'flex',gap:7}},
+        h('button',{onClick:()=>setDark(d=>!d),style:{background:'var(--card2)',border:'1.5px solid var(--border)',borderRadius:10,padding:'7px 10px',cursor:'pointer',fontSize:16,color:'var(--text)'}},dark?'☀️':'🌙'),
+        h('button',{onClick:onLogout,style:{background:'#fee2e2',border:'none',borderRadius:10,padding:'7px 10px',cursor:'pointer',fontSize:12,fontWeight:700,color:'#dc2626',fontFamily:"'Nunito',sans-serif"}},'Abmelden')
+      )
+    ),
+    // Hero
+    h('div',{className:'card',style:{background:'linear-gradient(135deg,#6c3de8,#8b5cf6)',border:'none',marginBottom:12,color:'#fff'}},
+      h('div',{style:{display:'flex',justifyContent:'space-between',marginBottom:10}},
+        h('div',null,h('div',{style:{fontSize:12,opacity:.8,fontWeight:600}},'LEVEL '+(level+1)),h('div',{style:{fontSize:19,fontWeight:900}},LVL_NAMES[level])),
+        h('div',{style:{textAlign:'right'}},h('div',{style:{fontSize:24,fontWeight:900}},user.xp||0),h('div',{style:{fontSize:11,opacity:.8}},'XP'))
+      ),
+      h('div',{style:{background:'rgba(255,255,255,.2)',borderRadius:999,height:8,overflow:'hidden'}},
+        h('div',{style:{background:'#fff',height:'100%',borderRadius:999,width:lvlPct+'%',transition:'width .8s'}})),
+      h('div',{style:{display:'flex',justifyContent:'space-between',fontSize:10,opacity:.7,marginTop:3}},
+        h('span',null,XP_LVL[level]+' XP'),h('span',null,level<XP_LVL.length-1?XP_LVL[level+1]+' XP':'MAX')),
+      h('div',{style:{display:'flex',gap:10,marginTop:11}},
+        [{v:user.streak||0,e:'🔥',l:'Streak'},{v:done+'/27',e:'📚',l:'Kapitel'},{v:user.badges?.length||0,e:'🏅',l:'Badges'}]
+          .map(s=>h('div',{key:s.l,style:{background:'rgba(255,255,255,.15)',borderRadius:10,padding:'7px 11px',flex:1,textAlign:'center'}},
+            h('div',{style:{fontSize:19,fontWeight:900}},s.v),h('div',{style:{fontSize:10,opacity:.8}},s.e+' '+s.l)))
+      )
+    ),
+    // Subject grid
+    h('div',{className:'card',style:{marginBottom:12}},
+      h('div',{style:{display:'flex',justifyContent:'space-between',marginBottom:8}},
+        h('span',{style:{fontWeight:800,fontSize:15}},'Gesamtfortschritt'),
+        h('span',{style:{color:'var(--text2)',fontWeight:700}},Math.round(done/27*100)+'%')
+      ),
+      h('div',{className:'pb',style:{marginBottom:10}},
+        h('div',{className:'pb-fill',style:{background:'linear-gradient(90deg,#6c3de8,#8b5cf6)',width:(done/27*100)+'%'}})),
+      h('div',{style:{display:'grid',gridTemplateColumns:'repeat(2,1fr)',gap:8}},
+        SUBJECTS.map(s=>{
+          const sd=s.cids.filter(id=>progress[id]?.stars>0).length;
+          return h('button',{key:s.id,onClick:()=>{setCurSub(s.id);setView('subjects');},
+            style:{background:s.light,borderRadius:13,padding:'10px 11px',border:'1.5px solid '+s.col+'22',
+              cursor:'pointer',textAlign:'left',transition:'all .2s',fontFamily:"'Nunito',sans-serif"}},
+            h('div',{style:{fontSize:18,marginBottom:3}},s.emoji),
+            h('div',{style:{fontWeight:700,fontSize:12,color:s.col}},s.name.split('&')[0].trim()),
+            h('div',{style:{fontSize:11,color:'#888',marginTop:1}},sd+'/'+s.cids.length+' Kapitel'),
+            h('div',{className:'pb',style:{height:3,marginTop:5}},
+              h('div',{className:'pb-fill',style:{background:s.col,width:(sd/s.cids.length*100)+'%'}}))
+          );
+        })
+      )
+    ),
+    h('button',{onClick:()=>setView('exam'),
+      style:{background:'linear-gradient(135deg,#1a0533,#2d1566)',color:'#fff',border:'none',width:'100%',
+        fontSize:15,padding:'14px',borderRadius:15,cursor:'pointer',fontWeight:700,fontFamily:"'Nunito',sans-serif",
+        boxShadow:'0 8px 24px rgba(26,5,51,.35)'}},
+      '🎓 ZP10 2024 – Prüfungssimulation starten')
+  );
+}
+
+function SubjectsView({progress,setView,curSub,setCurSub,setCurCh}){
+  const[open,setOpen]=useState(curSub||null);
+  return h('div',{className:'view'},
+    h('h2',{style:{fontWeight:900,fontSize:21,marginBottom:13}},'📚 Fachgebiete'),
+    SUBJECTS.map(s=>{
+      const done=s.cids.filter(id=>progress[id]?.stars>0).length;const isOpen=open===s.id;
+      return h('div',{key:s.id,style:{marginBottom:9}},
+        h('div',{className:'card',onClick:()=>setOpen(isOpen?null:s.id),
+          style:{cursor:'pointer',background:isOpen?s.light:'var(--card)',padding:'14px 16px',transition:'all .2s'}},
+          h('div',{style:{display:'flex',alignItems:'center',gap:10}},
+            h('div',{style:{fontSize:27,background:'linear-gradient(135deg,'+s.col+'22,'+s.col+'44)',borderRadius:10,padding:'7px 9px',flexShrink:0}},s.emoji),
+            h('div',{style:{flex:1}},h('div',{style:{fontWeight:800,fontSize:16}},s.name),h('div',{style:{fontSize:12,color:'var(--text2)',marginTop:1}},done+'/'+s.cids.length+' abgeschlossen')),
+            h('div',{style:{fontSize:15,color:'var(--text2)',transform:isOpen?'rotate(90deg)':'none',transition:'transform .2s',flexShrink:0}},'›')
+          ),
+          h('div',{className:'pb',style:{marginTop:8,height:6}},h('div',{className:'pb-fill',style:{background:s.grad,width:(done/s.cids.length*100)+'%'}}))
+        ),
+        isOpen&&h('div',{style:{background:'var(--card2)',borderRadius:'0 0 16px 16px',padding:'6px 9px 9px',
+          border:'1.5px solid var(--border)',borderTop:'none',animation:'slideUp .2s ease'}},
+          s.cids.map(id=>{
+            const ch=CH[id];const p=progress[id];const stars=p?.stars||0;
+            return h('div',{key:id,className:'card',
+              style:{marginBottom:6,cursor:'pointer',borderLeft:'4px solid '+(stars>0?s.col:'var(--border)'),
+                transition:'all .2s',padding:'11px 13px'},
+              onClick:()=>{setCurSub(s.id);setCurCh(id);setView('theory');}},
+              h('div',{style:{display:'flex',alignItems:'center',gap:8}},
+                h('span',{style:{fontSize:19,flexShrink:0}},ch.emoji),
+                h('div',{style:{flex:1,minWidth:0}},
+                  h('div',{style:{fontWeight:700,fontSize:14}},ch.name),
+                  h('div',{style:{display:'flex',gap:5,marginTop:2,alignItems:'center',flexWrap:'wrap'}},
+                    h('span',{className:'d-'+ch.diff},ch.diff),
+                    p?.attempts>0&&h('span',{style:{fontSize:11,color:'var(--text2)'}},p.attempts+'× · Best: '+p.bestScore+'%')
+                  )
+                ),
+                h('div',{style:{display:'flex',gap:1,flexShrink:0}},
+                  [1,2,3].map(i=>h('span',{key:i,style:{fontSize:15,opacity:stars>=i?1:.2}},'⭐'))
+                )
+              )
+            );
+          })
+        )
+      );
+    })
+  );
+}
+
+function TheoryView({ch,setView,setQuiz,progress}){
+  const sub=SUBJECTS.find(s=>s.id===ch.sub);const p=progress[ch.id];
+  const startQuiz=()=>{setQuiz({questions:[...ch.qs].sort(()=>Math.random()-.5),current:0,score:0,answers:[],chId:ch.id,xpGained:0});setView('quiz');};
+  return h('div',{className:'view'},
+    h('button',{className:'btn btn-g',onClick:()=>setView('subjects'),style:{marginBottom:13,fontSize:13,padding:'7px 12px'}},'← Zurück'),
+    h('div',{className:'card',style:{background:sub.grad,border:'none',marginBottom:13,color:'#fff'}},
+      h('div',{style:{fontSize:34,marginBottom:5}},ch.emoji),
+      h('h2',{style:{margin:'0 0 3px',fontSize:19,fontWeight:900}},ch.name),
+      h('div',{style:{opacity:.8,fontSize:13}},sub.name),
+      p?.stars>0&&h('div',{style:{display:'flex',gap:3,marginTop:6,alignItems:'center'}},
+        [1,2,3].map(i=>h('span',{key:i,style:{fontSize:17,opacity:p.stars>=i?1:.3}},p.stars>=i?'⭐':'☆')),
+        h('span',{style:{marginLeft:5,fontSize:12,opacity:.9}},'Best: '+p.bestScore+'%')
+      )
+    ),
+    h('div',{className:'card',style:{marginBottom:13}},
+      h('h3',{style:{fontWeight:800,fontSize:16,marginBottom:9,color:sub.col}},'📖 Theorie & Formeln'),
+      h('pre',{style:{lineHeight:1.7,fontSize:13,whiteSpace:'pre-wrap',color:'var(--text)',fontFamily:"'Nunito',sans-serif",margin:0}},ch.theory)
+    ),
+    h('div',{className:'card',style:{background:sub.light||'var(--card2)',border:'1.5px solid '+sub.col+'33'}},
+      h('div',{style:{fontWeight:700,fontSize:15,marginBottom:4}},'🎯 Quiz: '+ch.qs.length+' Aufgaben'),
+      h('div',{style:{fontSize:13,color:'var(--text2)',marginBottom:11}},'Sammle Sterne und XP!'),
+      h('button',{className:'btn',onClick:startQuiz,style:{background:sub.col,color:'#fff',width:'100%',fontSize:15,padding:'12px',borderRadius:13}},'Quiz starten! 🚀')
+    )
+  );
+}
+
+function QuizView({quiz,setQuiz,setView,setQuizResult,setProgress,awardXP,progress}){
+  const[sel,setSel]=useState(null);const[answered,setAnswered]=useState(false);const[correct,setCorrect]=useState(false);
+  const q=quiz.questions[quiz.current];const ch=CH[quiz.chId];const sub=SUBJECTS.find(s=>s.id===ch?.sub);
+  const total=quiz.questions.length;const pct=Math.round((quiz.current/total)*100);
+  const handleAns=ans=>{if(answered)return;setSel(ans);setAnswered(true);setCorrect(ans===q.a);};
+  const next=()=>{
+    const isOk=sel===q.a;const nScore=quiz.score+(isOk?1:0);const nXp=quiz.xpGained+(isOk?q.x:0);
+    const nAns=[...quiz.answers,{correct:isOk,chosen:sel,q}];
+    if(quiz.current>=total-1){
+      const sp=Math.round((nScore/total)*100);const stars=sp>=90?3:sp>=60?2:sp>=40?1:0;
+      const prev=progress[quiz.chId];
+      const np={stars:Math.max(stars,prev?.stars||0),completed:true,attempts:(prev?.attempts||0)+1,bestScore:Math.max(sp,prev?.bestScore||0)};
+      const upd={...progress,[quiz.chId]:np};setProgress(upd);awardXP(nXp,upd);
+      setQuizResult({score:nScore,total,scorePct:sp,stars,xpGained:nXp,answers:nAns,chId:quiz.chId});setView('result');
+    } else {setQuiz(p=>({...p,current:p.current+1,score:nScore,xpGained:nXp,answers:nAns}));setSel(null);setAnswered(false);setCorrect(false);}
+  };
+  return h('div',{style:{padding:'14px 14px 40px',minHeight:'100vh'}},
+    h('div',{style:{display:'flex',alignItems:'center',gap:10,marginBottom:13}},
+      h('button',{className:'btn btn-g',onClick:()=>setView('theory'),style:{fontSize:12,padding:'5px 10px'}},'✕'),
+      h('div',{className:'pb',style:{flex:1}},h('div',{className:'pb-fill',style:{background:sub?.grad||'#6c3de8',width:pct+'%'}})),
+      h('div',{style:{fontSize:12,fontWeight:700,color:'var(--text2)'}},(quiz.current+1)+'/'+total)
+    ),
+    h('div',{className:'card',style:{marginBottom:13}},
+      h('div',{style:{display:'flex',gap:6,marginBottom:9}},h('span',{className:'d-'+q.d},q.d),h('span',{className:'xp-pill'},'+'+q.x+' XP')),
+      h('p',{style:{fontSize:16,fontWeight:700,lineHeight:1.5,margin:0}},q.q)
+    ),
+    q.t==='mc'&&h('div',{style:{display:'flex',flexDirection:'column',gap:8,marginBottom:13}},
+      q.o.map((opt,i)=>{
+        let bg='var(--card)',border='1.5px solid var(--border)',col='var(--text)';
+        if(answered){if(i===q.a){bg='#dcfce7';border='2px solid #22c55e';col='#166534';}else if(i===sel&&!correct){bg='#fee2e2';border='2px solid #ef4444';col='#991b1b';}}
+        else if(sel===i){bg=sub?.light||'#f5f3ff';border='2px solid '+(sub?.col||'#6c3de8');}
+        return h('button',{key:i,onClick:()=>handleAns(i),
+          style:{background:bg,border,borderRadius:13,padding:'11px 15px',textAlign:'left',
+            cursor:answered?'default':'pointer',fontSize:14,fontWeight:600,color:col,
+            fontFamily:"'Nunito',sans-serif",width:'100%',display:'block'}},
+          h('span',{style:{display:'inline-flex',width:25,height:25,borderRadius:6,
+            background:answered&&i===q.a?'#22c55e':answered&&i===sel&&!correct?'#ef4444':'rgba(108,61,232,.08)',
+            color:answered&&(i===q.a||i===sel)?'#fff':'var(--acc)',alignItems:'center',justifyContent:'center',
+            marginRight:9,fontSize:12,fontWeight:800,flexShrink:0}},
+            answered?(i===q.a?'✓':i===sel?'✗':String.fromCharCode(65+i)):String.fromCharCode(65+i)),opt);
+      })
+    ),
+    q.t==='tf'&&h('div',{style:{display:'flex',gap:9,marginBottom:13}},
+      [{l:'✓ Wahr',v:true},{l:'✗ Falsch',v:false}].map(({l,v})=>{
+        const isc=v===q.a;
+        return h('button',{key:String(v),onClick:()=>handleAns(v),
+          style:{flex:1,padding:'15px',borderRadius:15,fontSize:16,fontWeight:800,cursor:answered?'default':'pointer',
+            fontFamily:"'Nunito',sans-serif",transition:'all .2s',border:'2px solid',
+            background:answered?(isc?'#dcfce7':v===sel?'#fee2e2':'var(--card)'):'var(--card)',
+            borderColor:answered?(isc?'#22c55e':v===sel?'#ef4444':'var(--border)'):(sel===v?sub?.col||'#6c3de8':'var(--border)'),
+            color:answered?(isc?'#166634':v===sel?'#991b1b':'var(--text)'):'var(--text)'}},l);
+      })
+    ),
+    answered&&h('div',{className:'card',style:{marginBottom:13,background:correct?'#f0fdf4':'#fff1f2',border:'1.5px solid '+(correct?'#bbf7d0':'#fecdd3')}},
+      h('div',{style:{fontWeight:800,fontSize:15,color:correct?'#16a34a':'#dc2626',marginBottom:4}},correct?'🎉 Richtig!':'❌ Leider falsch'),
+      h('div',{style:{fontSize:13,lineHeight:1.6}},q.e)
+    ),
+    answered&&h('button',{className:'btn btn-p',onClick:next,style:{width:'100%',fontSize:15,padding:'12px',borderRadius:13}},
+      quiz.current>=total-1?'Ergebnis sehen 🏆':'Weiter →')
+  );
+}
+
+function ResultView({result,ch,setView}){
+  const sub=SUBJECTS.find(s=>s.id===ch?.sub);const{score,total,scorePct,stars,xpGained}=result;
+  return h('div',{style:{padding:'22px 14px',display:'flex',flexDirection:'column',alignItems:'center',justifyContent:'center',minHeight:'100vh'}},
+    h('div',{style:{textAlign:'center',marginBottom:18}},
+      h('div',{style:{fontSize:60,animation:'pop .5s ease',marginBottom:7}},stars===3?'🏆':stars===2?'⭐':stars===1?'👍':'💡'),
+      h('h2',{style:{fontWeight:900,fontSize:22,margin:'0 0 3px'}},scorePct>=90?'Fantastisch!':scorePct>=70?'Super!':scorePct>=50?'Gut!':'Weiter üben!'),
+      h('p',{style:{color:'var(--text2)',margin:0}},ch?.name)
+    ),
+    h('div',{style:{display:'flex',gap:5,marginBottom:18,fontSize:38}},
+      [1,2,3].map(i=>h('span',{key:i,style:{opacity:stars>=i?1:.2}},stars>=i?'⭐':'☆'))
+    ),
+    h('div',{className:'card',style:{width:'100%',maxWidth:300,marginBottom:13,textAlign:'center'}},
+      h('div',{style:{fontSize:40,fontWeight:900,color:sub?.col||'#6c3de8'}},scorePct+'%'),
+      h('div',{style:{color:'var(--text2)',marginBottom:9}},score+'/'+total+' richtig'),
+      h('div',{style:{background:'rgba(108,61,232,.1)',borderRadius:11,padding:'7px',display:'inline-flex',gap:7,alignItems:'center'}},
+        h('span',{style:{fontSize:18}},'⚡'),h('span',{style:{fontWeight:900,fontSize:16,color:sub?.col||'#6c3de8'}},'+'+xpGained+' XP')
+      )
+    ),
+    result.answers.filter(a=>!a.correct).length>0&&h('div',{className:'card',style:{width:'100%',maxWidth:300,marginBottom:13}},
+      h('div',{style:{fontWeight:800,fontSize:13,marginBottom:7,color:'#dc2626'}},'❌ Falsch beantwortet:'),
+      result.answers.filter(a=>!a.correct).slice(0,3).map((a,i)=>
+        h('div',{key:i,style:{fontSize:11,background:'#fff1f2',borderRadius:8,padding:'6px 9px',marginBottom:4,color:'#991b1b'}},
+          h('div',{style:{fontWeight:700,marginBottom:1}},a.q.q.substring(0,50)+(a.q.q.length>50?'..':'')),
+          h('div',null,'Richtig: '+(a.q.t==='tf'?(a.q.a?'Wahr':'Falsch'):a.q.o?.[a.q.a]))
+        )
+      )
+    ),
+    h('div',{style:{display:'flex',gap:8,width:'100%',maxWidth:300}},
+      h('button',{className:'btn btn-g',onClick:()=>setView('theory'),style:{flex:1}},'↩ Nochmal'),
+      h('button',{className:'btn btn-p',onClick:()=>setView('subjects'),style:{flex:1}},'Weiter 🎯')
+    )
+  );
+}
+
+function StatsView({user,progress}){
+  const level=getLevel(user.xp||0);const done=ALL_CH.filter(id=>progress[id]?.stars>0).length;
+  const att=Object.values(progress).filter(p=>p.attempts>0);
+  const avg=att.length?Math.round(att.reduce((s,p)=>s+(p.bestScore||0),0)/att.length):0;
+  return h('div',{className:'view'},
+    h('h2',{style:{fontWeight:900,fontSize:21,marginBottom:16}},'📊 Meine Statistiken'),
+    h('div',{style:{display:'grid',gridTemplateColumns:'repeat(2,1fr)',gap:9,marginBottom:16}},
+      [{l:'Gesamt XP',v:user.xp||0,e:'⚡',c:'#6c3de8'},{l:'Level',v:level+1,e:'🎮',c:'#059669'},
+       {l:'Streak',v:(user.streak||0)+' T.',e:'🔥',c:'#d97706'},{l:'Abzeichen',v:user.badges?.length||0,e:'🏅',c:'#db2777'},
+       {l:'Kapitel',v:done+'/27',e:'📚',c:'#0284c7'},{l:'Ø Ergebnis',v:avg+'%',e:'🎯',c:'#16a34a'}
+      ].map(({l,v,e,c})=>h('div',{key:l,className:'card',style:{textAlign:'center',padding:13}},
+        h('div',{style:{fontSize:22,marginBottom:4}},e),h('div',{style:{fontSize:19,fontWeight:900,color:c}},v),
+        h('div',{style:{fontSize:11,color:'var(--text2)',marginTop:1}},l)))
+    ),
+    SUBJECTS.map(s=>{
+      const sd=s.cids.filter(id=>progress[id]?.stars>0).length;const pct=Math.round(sd/s.cids.length*100);
+      return h('div',{key:s.id,className:'card',style:{marginBottom:8}},
+        h('div',{style:{display:'flex',alignItems:'center',gap:8,marginBottom:5}},
+          h('span',{style:{fontSize:20,flexShrink:0}},s.emoji),
+          h('div',{style:{flex:1,minWidth:0}},h('div',{style:{fontWeight:700,fontSize:14}},s.name),h('div',{style:{fontSize:11,color:'var(--text2)'}},sd+'/'+s.cids.length+' · '+pct+'%')),
+          h('div',{style:{fontWeight:900,fontSize:17,color:s.col,flexShrink:0}},pct+'%')
+        ),
+        h('div',{className:'pb'},h('div',{className:'pb-fill',style:{background:s.grad,width:pct+'%'}}))
+      );
+    })
+  );
+}
+
+function BadgesView({user}){
+  const earned=new Set(user.badges||[]);
+  return h('div',{className:'view'},
+    h('h2',{style:{fontWeight:900,fontSize:21,marginBottom:4}},'🏅 Abzeichen'),
+    h('p',{style:{color:'var(--text2)',fontSize:12,marginBottom:14}},earned.size+'/'+BADGES.length+' gesammelt'),
+    h('div',{style:{display:'grid',gridTemplateColumns:'repeat(2,1fr)',gap:9}},
+      BADGES.map(b=>{
+        const has=earned.has(b.id);
+        return h('div',{key:b.id,className:'card',style:{padding:13,opacity:has?1:.4,
+          background:has?'var(--card)':'var(--card2)',border:has?'2px solid #6c3de822':'1.5px solid var(--border)'}},
+          h('div',{style:{fontSize:30,marginBottom:6,filter:has?'none':'grayscale(1)'}},b.emoji),
+          h('div',{style:{fontWeight:800,fontSize:13,marginBottom:3}},b.name),
+          h('div',{style:{fontSize:11,color:'var(--text2)',lineHeight:1.4}},b.desc),
+          has&&h('div',{style:{marginTop:5,fontSize:11,color:'#6c3de8',fontWeight:700}},'✓ Verdient!')
+        );
+      })
+    )
+  );
+}
+
+function NavBar({view,setView,isAdmin}){
+  const tabs=[{id:'dashboard',e:'🏠',l:'Home'},{id:'subjects',e:'📚',l:'Lernen'},
+    {id:'exam',e:'🎓',l:'ZP10'},{id:'stats',e:'📊',l:'Stats'},{id:'badges',e:'🏅',l:'Badges'},
+    ...(isAdmin?[{id:'admin',e:'👑',l:'Admin'}]:[])];
+  return h('div',{className:'nav-bar'},
+    tabs.map(t=>h('button',{key:t.id,className:'nav-btn'+(view===t.id?' active':''),onClick:()=>setView(t.id)},
+      h('div',{style:{fontSize:19,marginBottom:1,transform:view===t.id?'scale(1.2)':'scale(1)',transition:'transform .15s'}},t.e),
+      h('div',{style:{fontSize:9,fontWeight:view===t.id?800:600}},t.l),
+      view===t.id?h('div',{className:'nav-dot'}):null
+    ))
+  );
+}
+
+/* ═══════════════════════ APP ROOT ═══════════════════════ */
+function App(){
+  const[view,setView]=useState('dashboard');
+  const[dark,setDark]=useState(()=>{try{return localStorage.getItem('zp10_dark')==='1';}catch(e){return false;}});
+  const[appUser,setAppUser]=useState(null);
+  const[progress,setProgress]=useState({});
+  const[curSub,setCurSub]=useState(null);
+  const[curCh,setCurCh]=useState(null);
+  const[quiz,setQuiz]=useState(null);
+  const[quizResult,setQuizResult]=useState(null);
+  const[badgeAlert,setBadgeAlert]=useState([]);
+  const[loaded,setLoaded]=useState(false);
+
+  useEffect(()=>{
+    loadUsers();
+    const u=getCurrentUser();
+    if(u){setAppUser(u);setProgress(u.progress||{});}
+    setLoaded(true);
+  },[]);
+
+  useEffect(()=>{
+    if(dark){
+      document.documentElement.classList.add('dark');
+      document.body.classList.add('dark');
+    } else {
+      document.documentElement.classList.remove('dark');
+      document.body.classList.remove('dark');
+    }
+    try{localStorage.setItem('zp10_dark',dark?'1':'0');}catch(e){}
+  },[dark]);
+
+  useEffect(()=>{
+    if(appUser&&loaded)updateUser(appUser.id,{progress,xp:appUser.xp,badges:appUser.badges,streak:appUser.streak});
+  },[progress,appUser?.xp,appUser?.badges]);
+
+  const handleLogin=u=>{setAppUser(u);setProgress(u.progress||{});setView('dashboard');};
+  const handleLogout=()=>{setSession(null);setAppUser(null);setProgress({});setView('dashboard');};
+
+  const awardXP=useCallback((amount,prog)=>{
+    setAppUser(u=>{
+      if(!u)return u;
+      const newXp=(u.xp||0)+amount;
+      const{badges,newOnes}=checkBadges({...u,xp:newXp},prog||progress);
+      if(newOnes.length)setBadgeAlert(p=>[...p,...newOnes]);
+      const upd={...u,xp:newXp,badges};
+      updateUser(u.id,{xp:newXp,badges});return upd;
+    });
+  },[progress]);
+
+  if(!loaded)return h('div',{style:{display:'flex',alignItems:'center',justifyContent:'center',
+    height:'100vh',background:'linear-gradient(160deg,#1a0533,#0d2b6e)',color:'#fff',flexDirection:'column',gap:12,fontFamily:"'Nunito',sans-serif"}},
+    h('div',{style:{fontSize:50,animation:'pulse 1.5s infinite'}},'🧮'),
+    h('div',{style:{fontSize:17,fontWeight:800}},'ZP10 Mathe lädt…')
+  );
+
+  if(!appUser)return h(AuthPortal,{onLogin:handleLogin});
+
+  const showNav=['dashboard','subjects','stats','badges','exam','admin'].includes(view);
+
+  return h(Fragment,null,
+    badgeAlert.map((bid,i)=>{
+      const b=BADGES.find(x=>x.id===bid);if(!b)return null;
+      return h('div',{key:bid,className:'badge-alert',style:{top:14+i*80}},
+        h('span',{style:{fontSize:24}},b.emoji),
+        h('div',null,h('div',{style:{fontWeight:800,fontSize:13}},'Neues Abzeichen!'),h('div',{style:{fontSize:12,opacity:.9}},b.name)),
+        h('button',{onClick:()=>setBadgeAlert(p=>p.filter(x=>x!==bid)),
+          style:{background:'rgba(255,255,255,.2)',border:'none',borderRadius:6,color:'#fff',cursor:'pointer',padding:'3px 7px',fontSize:11,marginLeft:6}},'✕')
+      );
+    }),
+    view==='dashboard'&&h(DashView,{dark,setDark,user:appUser,progress,setView,setCurSub,onLogout:handleLogout}),
+    view==='subjects'&&h(SubjectsView,{progress,setView,curSub,setCurSub,setCurCh}),
+    view==='theory'&&curCh&&h(TheoryView,{ch:CH[curCh],setView,setQuiz,progress}),
+    view==='quiz'&&quiz&&h(QuizView,{quiz,setQuiz,setView,setQuizResult,setProgress,awardXP,progress}),
+    view==='result'&&quizResult&&h(ResultView,{result:quizResult,ch:CH[quizResult.chId],setView}),
+    view==='stats'&&h(StatsView,{user:appUser,progress}),
+    view==='badges'&&h(BadgesView,{user:appUser}),
+    view==='exam'&&h(ExamZP10,{setView,awardXP,setUser:setAppUser}),
+    view==='admin'&&appUser.isAdmin&&h(AdminPanel,{currentUser:appUser}),
+    showNav&&h(NavBar,{view,setView,isAdmin:appUser.isAdmin})
+  );
+}
+
+ReactDOM.createRoot(document.getElementById('app')).render(h(App,null));
+</script>
+</body>
+</html>
